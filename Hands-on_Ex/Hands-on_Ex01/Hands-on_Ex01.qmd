@@ -226,7 +226,7 @@ ggplot(data=exam_data,
   theme_gray()
 ```
 
-##  with theme_classic()
+## with theme_classic()
 
 ```{r}
 ggplot(data=exam_data, 
