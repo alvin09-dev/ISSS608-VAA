@@ -142,22 +142,36 @@
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html",
     "href": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html",
-    "title": "Hands-on_Ex03",
+    "title": "Hands-on Exercise 03",
     "section": "",
     "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse) \n\n\n\n\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\n\nRows: 322 Columns: 7\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (4): ID, CLASS, GENDER, RACE\ndbl (3): ENGLISH, MATHS, SCIENCE\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#installing-of-required-libraries",
     "href": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#installing-of-required-libraries",
-    "title": "Hands-on_Ex03",
+    "title": "Hands-on Exercise 03",
     "section": "",
     "text": "pacman::p_load(ggiraph, plotly, \n               patchwork, DT, tidyverse)"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#importing-the-data",
     "href": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#importing-the-data",
-    "title": "Hands-on_Ex03",
+    "title": "Hands-on Exercise 03",
     "section": "",
     "text": "exam_data &lt;- read_csv(\"data/Exam_data.csv\")\n\nRows: 322 Columns: 7\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (4): ID, CLASS, GENDER, RACE\ndbl (3): ENGLISH, MATHS, SCIENCE\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#installing-of-required-libraries-1",
+    "href": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#installing-of-required-libraries-1",
+    "title": "Hands-on Exercise 03",
+    "section": "Installing of required libraries",
+    "text": "Installing of required libraries\n\npacman::p_load(readxl, gifski, gapminder,\n               plotly, gganimate, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#importing-data",
+    "href": "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex03.html#importing-data",
+    "title": "Hands-on Exercise 03",
+    "section": "Importing data",
+    "text": "Importing data\n\ncol &lt;- c(\"Country\", \"Continent\")\nglobalPop &lt;- read_xls(\"data/GlobalPopulation.xls\",\n                      sheet=\"Data\") %&gt;%\n  mutate_at(col, as.factor) %&gt;%\n  mutate(Year = as.integer(Year))"
   }
 ]
