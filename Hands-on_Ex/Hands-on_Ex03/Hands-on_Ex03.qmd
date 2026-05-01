@@ -1,8 +1,6 @@
 ---
 title: "Hands-on_Ex03"
 author: "Alvin Matthew"
-format: html
-editor: visual
 ---
 
 # Getting Started
@@ -17,7 +15,7 @@ pacman::p_load(ggiraph, plotly,
 ## Importing the data
 
 ```{r}
-exam_data <- read_csv("Exam_data.csv")
+exam_data <- read_csv("data/Exam_data.csv")
 ```
 
 # Aesthetic using *tooltip* (Hover over the dots for values)
