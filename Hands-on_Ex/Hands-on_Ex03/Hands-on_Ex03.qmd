@@ -1,5 +1,5 @@
 ---
-title: "Hands-on_Ex03"
+title: "Hands-on Exercise 03"
 author: "Alvin Matthew"
 ---
 
