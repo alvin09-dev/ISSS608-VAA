@@ -1,6 +1,9 @@
 ---
 title: "Hands-on Exercise 2"
 author: "Alvin Matthew"
+execute:
+  warning: false
+  message: false
 ---
 
 # Getting Started
