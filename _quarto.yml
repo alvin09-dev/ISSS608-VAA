@@ -16,7 +16,7 @@ website:
     - text: "Take home Assignments"
       menu:
       - text: ""Take-Home Assignment 1""
-        href: "Take-Home_Ex/Take-home_ex01"
+        href: "Take-home_Ex/Take-home_ex01.html"
     right:
       - href: index.qmd
         text: Home
