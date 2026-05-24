@@ -1,5 +1,6 @@
 project:
   type: website
+
 website:
   title: "ISSS608-Visual Analytics & Applications"
   navbar:
@@ -16,12 +17,10 @@ website:
         menu:
           - text: "Take-Home Assignment 1"
             href: "Take-home_Ex/Take-home_ex01.html"
-          
       - text: "Take home Assignments Technical Files"
         menu:
           - text: "Take-Home Assignment 1 Technical File"
             href: "Take-home_Ex/Take-home_ex01_technical.html"
-            
     right:
       - href: index.qmd
         text: Home
