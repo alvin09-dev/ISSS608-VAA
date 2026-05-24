@@ -1,9 +1,0 @@
----
-title: "About Me"
----
-
-Welcome to my ISSS608 Visual Analytic & Applications site
-
-My name is Alvin Matthew, a current student in my second last semester of MITB.I started this class in the April 2026 semester with Dr Kam Tin Seong as my professor.
-
-You will find my work throughout this semester in this site.
