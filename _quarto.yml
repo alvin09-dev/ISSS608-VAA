@@ -1,6 +1,5 @@
 project:
   type: website
-  output-dir: public
 website:
   title: "ISSS608-Visual Analytics & Applications"
   navbar:
