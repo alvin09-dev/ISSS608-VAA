@@ -21,3 +21,6 @@ website:
         menu:
           - text: "Take-Home Assignment 1 Technical File"
             href: "Take-home_Ex/Take-home_ex01_technical.html"
+    right:
+      - href: index.qmd
+        text: Home
