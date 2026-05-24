@@ -1,0 +1,468 @@
+---
+title: "Take-home Exercise 1"
+author: "Alvin Matthew"
+date: 24 May 2026
+format: 
+  revealjs:
+    theme: default     
+    transition: slide  
+    slide-number: true 
+    center: false
+    smaller: false
+    include-in-header:
+      text: |
+        <style>
+        .reveal {
+          font-size: 18px;
+        }
+        </style>
+execute: 
+  echo: true           
+  eval: true           
+  warning: false       
+---
+
+# Overview
+
+**Setting the Scene**
+
+- Insurance providers often face under-performing portfolios, driven by unclear causes of poor profitability and high market volatility.
+- This project explores how visual analytics can help uncover hidden loss drivers, risk patterns and segmentation opportunities, and improved underwriting strategies.
+- Using a dataset from [Mendeley Data](https://data.mendeley.com/datasets/sw4jmdb2sm/1?utm_source=chatgpt.com), this analysis focuses on numerical, categorical, and temporal variables.
+- Using univariate (one variable) and bivariate (two variables) analyses
+- Plots, graphs, data cleaning, and presentation slides will be done using RStudio using R coding in Quatro Document HTML format.
+- Empty data cells are ignored based on the Missing Completely at Random (MCAR) mechanism as all variables can be considered completely independent of any observed values.
+  - **Our Objective:** [Gain deeper insights into portfolio performance and identify key factors affecting profitability and volatility in our portfolios]{.underline}
+
+```{r}
+#| include: false
+pacman::p_load(
+  tidyverse,    
+  treemapify,   
+  colorspace,   
+  hrbrthemes,   
+  ggdist,       
+  ggstatsplot,  
+  plotly,
+  corrplot,
+  dplyr,
+  ggplot2,
+  forcats,
+  scales
+)
+```
+
+```{r}
+#| include: false
+df <- read_delim("Dataset of motor insurance portfolio.csv", 
+                 delim = ";", 
+                 locale = locale(decimal_mark = "."),
+                 show_col_types = FALSE)
+
+clean_df <- df %>%
+  drop_na(vehicle_age, age_driving_licence, fuel_type, vehicle_value) %>%
+  
+  mutate(
+    policy_type = as.factor(policy_type),
+    policy_status = as.factor(policy_status),
+    business_type = as.factor(business_type),
+    payment_frequency = as.factor(payment_frequency),
+    bonus_score = as.factor(bonus_score),
+    fuel_type = as.factor(fuel_type),
+    vehicle_brand = as.factor(vehicle_brand),
+    municipality_type = as.factor(municipality_type),
+    circulation_area = as.factor(circulation_area),
+    year = as.factor(year),
+    
+    total_exposure = as.numeric(total_exposure),
+    total_claims = as.numeric(total_claims),
+    total_premium = as.numeric(total_premium),
+    total_incurred = as.numeric(total_incurred)
+  ) %>%
+  
+  mutate(
+    loss_ratio = ifelse(total_premium > 0, total_incurred / total_premium, 0),
+    claim_frequency = ifelse(total_exposure > 0, total_claims / total_exposure, 0),
+    claim_severity = ifelse(total_claims > 0, total_incurred / total_claims, 0)
+  ) %>%
+  
+  filter(
+    total_premium > 0, 
+    driver_age >= 18, 
+    vehicle_age >= 0
+  )
+
+glimpse(clean_df)
+```
+
+## Distribution of Drivers' Ages in Our Portfolio
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+
+avg_age <- median(clean_df$driver_age, na.rm = TRUE)
+p_age <- ggplot(clean_df, aes(x = driver_age)) +
+  geom_histogram(binwidth = 4, fill = "steelblue", color = "white") +
+  # Add the vertical line for the average
+  geom_vline(xintercept = avg_age, color = "darkred", linetype = "dashed", linewidth = 1.2) +
+  labs(
+    title = "Distribution of Driver Ages in the Portfolio",
+    subtitle = paste("The dashed red line represents the median age:", round(avg_age, 1), "years"),
+    x = "Driver Age",
+    y = "Count of Policies"
+  ) +
+  theme_minimal()
+
+print(p_age)
+```
+
+- Most drivers in our portfolio are aged around 40 years old (based on mode of distribution)
+
+- Median stands at 48 years old. This creates a distribution that is right-skewed meaning half of our clients are 48 years old and younger while the other half are older than 48 years.
+
+## Claim Frequency by Driver Age Segment
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+clean_df %>%
+  mutate(age_group = cut(driver_age, breaks = seq(18, 90, by = 10))) %>%
+  group_by(age_group) %>%
+  summarise(avg_claim_freq = mean(claim_frequency, na.rm = TRUE)) %>%
+  drop_na() %>%
+  ggplot(aes(x = age_group, y = avg_claim_freq)) +
+  geom_col(fill = "darkseagreen") +
+  labs(
+    title = "Claim Frequency Volatility by Driver Age Group",
+    x = "Driver Age Group",
+    y = "Average Claim Frequency"
+  ) +
+  theme_minimal()
+```
+
+- Based on the graph where the youngest drivers cohort is on the left, the oldest on the right, it is evident that younger drivers tend to make more claims
+
+## Relation Between Claim Severity & Age of Drivers Involved
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 5
+
+severity_by_driver_age <- clean_df %>%
+  filter(total_claims > 0) %>% 
+  group_by(driver_age) %>%
+  summarise(
+    avg_severity = mean(claim_severity, na.rm = TRUE),
+    claim_count = n()
+  ) %>%
+  filter(claim_count > 30)
+
+r_value <- cor(severity_by_driver_age$driver_age, severity_by_driver_age$avg_severity, use = "complete.obs")
+r_text <- paste0("r = ", round(r_value, 3))
+
+
+b2 <- ggplot(severity_by_driver_age, aes(x = driver_age, y = avg_severity)) + 
+  geom_point(aes(size = claim_count), color = "darkorange", alpha = 0.7) + 
+  geom_smooth(method = "lm", color = "darkblue", se = TRUE, show.legend = FALSE) +
+  theme_ipsum() +
+  labs(
+    title = paste0("Volatility: Claim Severity vs Driver Age (", r_text, ")"),
+    subtitle = paste("Pearson Correlation Coefficient:", round(r_value, 3)),
+    x = "Driver Age (Years)",
+    y = "Average Claim Severity ($)",
+    size = "Number of Claims"
+  )
+
+ggplotly(b2, tooltip = c("x", "y", "size"))
+```
+
+- It is noted that drivers aged 80 is an outlier with an extremely high average claim severity
+
+- Based on the weak positive linear correlation coefficient (r=0.286). This means older drivers tend to have higher claim severity but the difference compared to younger drivers is relatively small.
+
+  \* Refer to Appendix for formulas used
+
+## Distribution of Premium Paid by Policy Type
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+
+clean_df %>%
+  filter(total_premium < quantile(total_premium, 0.99, na.rm = TRUE)) %>%
+  mutate(policy_type = fct_reorder(policy_type, total_premium, .fun = median)) %>%
+  ggplot(aes(x = policy_type, y = total_premium, fill = policy_type)) +
+  
+  geom_violin(trim = FALSE, alpha = 0.5, color = NA) +
+  
+  geom_boxplot(width = 0.15, fill = "white", color = "gray30", alpha = 0.8, outlier.shape = NA) +
+  
+  scale_fill_viridis_d(option = "mako", direction = -1) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  theme_ipsum(base_family = "sans") +
+  theme(
+    legend.position = "none",
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "Premium Distribution by Policy Type",
+    subtitle = "Violin shapes show density; inner boxplots show median and interquartile ranges",
+    x = "Policy Type",
+    y = "Total Annual Premium ($)"
+  ) +
+  stat_summary(
+    fun = median, 
+    geom = "text",
+    aes(label = paste0("$", round(after_stat(y), 0))), 
+    position = position_nudge(x = 0.15),
+    hjust = 0,
+    color = "black", 
+    fontface = "bold",
+    size = 4
+  )
+```
+
+- Basic third-party only coverage (TP) has the cheapest premium at median price of \$161 with narrow deviations, meaning most clients are paying prices around the median price.
+
+- Comprehensive without excess (COMP_N) has the most expensive premium median price of \$565 with much wider deviations, meaning even though the typical premium is highest, actual prices may vary substantially across clients.
+
+  \* Refer to Appendix for descriptions of policy types
+
+## Frequency of Claims by Policy Type
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+
+claim_dist_df <- clean_df %>%
+  mutate(
+    claim_bucket = case_when(
+      total_claims == 0 ~ "0 Claims",
+      total_claims == 1 ~ "1 Claim",
+      total_claims == 2 ~ "2 Claims",
+      total_claims >= 3 ~ "3+ Claims"
+    ),
+
+    claim_bucket = factor(claim_bucket, levels = rev(c("0 Claims", "1 Claim", "2 Claims", "3+ Claims")))
+  ) %>%
+
+  count(policy_type, claim_bucket) %>%
+  group_by(policy_type) %>%
+  mutate(pct = n / sum(n)) %>%
+  ungroup()
+
+
+safe_order <- claim_dist_df %>% 
+  filter(claim_bucket == "0 Claims") %>% 
+  arrange(pct) %>%
+  pull(policy_type)
+
+claim_dist_df <- claim_dist_df %>%
+  mutate(policy_type = factor(policy_type, levels = safe_order))
+
+
+ggplot(claim_dist_df, aes(x = policy_type, y = pct, fill = claim_bucket)) +
+  geom_col(width = 0.65, color = "white", linewidth = 0.5) +
+  geom_text(
+    data = filter(claim_dist_df, pct > 0.02),
+    aes(label = percent(pct, accuracy = 0.1)), 
+    position = position_stack(vjust = 0.5), 
+    color = "white", fontface = "bold", size = 3.5
+  ) +
+  scale_fill_manual(values = c(
+    "3+ Claims" = "darkred", 
+    "2 Claims"  = "darkorange", 
+    "1 Claim"   = "steelblue", 
+    "0 Claims"  = "gray60"
+  )) +
+  scale_y_continuous(labels = percent_format()) +
+  coord_flip() +
+  theme_ipsum(base_family = "sans") +
+  labs(
+    title = "Claim Count Distribution by Policy Type",
+    subtitle = "Proportion of policies filing 0, 1, 2, or 3+ claims across different coverage packages",
+    x = "Policy Type",
+    y = "Percentage of Policies",
+    fill = "Number of Claims Filed:"
+  ) +
+  theme(
+    legend.position = "top", 
+    legend.justification = "left",
+    panel.grid.major.y = element_blank()
+  )
+```
+
+- Despite paying the highest premium out of all the policy types, Comprehensive without excess (COMP_N) clients have the highest claim rates as well. It is also noted that COMP_N has as significantly higher number of 3+ claims than any other policy type. In fact it is almost 5 times more than the next highest number of 3+ claims.
+
+## Composition of Portfolio by Vehicle Brands (Treemap)
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+
+brand_summary <- clean_df %>%
+  count(vehicle_brand) %>%
+  mutate(prop = n / sum(n)) %>%
+  filter(prop > 0.01) # Keep only brands with > 1% market share for clarity
+
+u1 <- ggplot(brand_summary, aes(area = n, fill = n, label = vehicle_brand)) +
+  geom_treemap() +
+  geom_treemap_text(colour = "white", place = "centre", grow = TRUE) +
+  scale_fill_continuous_sequential(palette = "Blues 3") +
+  theme_ipsum(base_family = "sans") +
+  labs(title = "Portfolio Composition by Vehicle Brand",
+       subtitle = "Displaying brands with >1% portfolio share",
+       fill = "Policy Count")
+
+print(u1)
+```
+
+- Most of the vehicles we covered are from budget brands such as Renault, Citroen, Peugeot, Volkswagen, Ford, Opel, and Seat
+
+- The three luxury brands that are notable are Audi, Mercedes, and BMW
+
+- This means that our cost of claims are leaning towards the cheaper end due to covering more budget brands than luxury brands
+
+# Total Incurred Losses Claim Type
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 6
+
+
+incurred_losses_df <- clean_df %>%
+  select(liability_property_incurred, liability_injury_incurred, property_incurred, 
+         theft_incurred, fire_incurred, glass_incurred, legal_protection_incurred, occupants_incurred) %>%
+  summarise(across(everything(), sum, na.rm = TRUE)) %>%
+  pivot_longer(cols = everything(), names_to = "incurred_type", values_to = "total_amount") %>%
+
+  mutate(
+    incurred_type = str_replace(incurred_type, "_incurred", ""),
+    incurred_type = str_replace_all(incurred_type, "_", " "),
+    incurred_type = str_to_title(incurred_type),
+    incurred_type = fct_reorder(incurred_type, total_amount)
+  )
+
+ggplot(incurred_losses_df, aes(x = incurred_type, y = total_amount)) +
+  geom_col(fill = "steelblue", width = 0.7) +
+  geom_text(aes(label = scales::dollar(total_amount, scale = 1e-6, suffix = "M")), 
+            hjust = -0.1, color = "gray30", fontface = "bold") +
+  coord_flip() +
+  theme_ipsum(base_family = "sans") +
+  scale_y_continuous(labels = scales::dollar_format(scale = 1e-6, suffix = "M"), 
+                     expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Total Incurred Losses by Coverage Type",
+    subtitle = "Financial severity breakdown (Displayed in Millions)",
+    x = "Coverage / Claim Type",
+    y = "Total Incurred Amount ($)"
+  ) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+- Third-party injury, Third-party property damage, and First-party property damage make up the most of our claims losses.
+
+- These three claim types create losses amount to \$65.57 million, which make up 89.33% of total losses.
+
+## Frequency & Severity Matrix of Claim Types
+
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 8
+
+library(ggrepel) 
+
+risk_matrix_df <- clean_df %>%
+  summarise(
+    port_exposure = sum(total_exposure, na.rm = TRUE),
+    
+    Property_Freq = sum(property_claims) / port_exposure,
+    Injury_Freq = sum(liability_injury_claims) / port_exposure,
+    Theft_Freq = sum(theft_claims) / port_exposure,
+    Fire_Freq = sum(fire_claims) / port_exposure,
+    Glass_Freq = sum(glass_claims) / port_exposure,
+    
+    Property_Sev = sum(property_incurred) / sum(property_claims),
+    Injury_Sev = sum(liability_injury_incurred) / sum(liability_injury_claims),
+    Theft_Sev = sum(theft_incurred) / sum(theft_claims),
+    Fire_Sev = sum(fire_incurred) / sum(fire_claims),
+    Glass_Sev = sum(glass_incurred) / sum(glass_claims)
+  ) %>%
+  pivot_longer(cols = -port_exposure, names_to = c("Coverage", ".value"), names_sep = "_") %>%
+  
+  mutate(
+    label_text = paste0(
+      Coverage, "\n(", 
+      scales::dollar(Sev, accuracy = 1), ", ", 
+      scales::percent(Freq, accuracy = 0.01), ")"
+    )
+  )
+
+
+ggplot(risk_matrix_df, aes(x = Freq, y = Sev, label = label_text)) +
+  geom_point(color = "darkred", size = 4) +
+  
+
+  geom_text_repel(fontface = "bold", size = 4.5, box.padding = 0.8, lineheight = 0.9, color = "midnightblue") +
+  
+  geom_vline(xintercept = median(risk_matrix_df$Freq), linetype = "dashed", color = "gray50") +
+  geom_hline(yintercept = median(risk_matrix_df$Sev), linetype = "dashed", color = "gray50") +
+  theme_ipsum(base_family = "sans") +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 0.1)) +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  labs(
+    title = "Portfolio Risk Matrix: Frequency vs. Severity",
+    subtitle = "Labels display: Coverage Type ($ Average Severity, % Annual Frequency)",
+    x = "Claim Frequency (% Chance per Year of Exposure)",
+    y = "Average Claim Severity ($)"
+  )
+```
+
+- High Severity, Low Frequency: [Fire and Injury]{.underline}
+
+- Low Severity, High Frequency: [Windshield/Glass and Property]{.underline}
+
+- Low Severity, Low Frequency: Theft
+
+  \* Refer to Appendix for formulas used
+
+# Recommendations
+
+- Based on the correlation between age and claim severity, adverse claim behaviours by COMP_N clients, and loss drivers due to property damage and injury
+
+- Overhaul "COMP_N" underwriting rules to introduce dynamic pricing or introduce mandatory excess trigger that activates automatically after the second claim within a single policy year.
+
+- Refine pricing models based on age because older drivers pose more severe financial volatility than younger cohorts. Implementing a cap on claims payout or requiring mandatory health checkups or even outright not willing to insure after a certain age may help stem our losses
+
+- The portfolio suffers from high frequency of low severity claims such as property and glass claims. It is suggested to have a specialised repair networks and glass replacement vendors to process claims in bulk and reduce average costs.
+
+# Appendix
+
+[**Formulas used**]{.underline}
+
+1.  $\text{Loss Ratio} = \frac{\text{Total Incurred Losses}}{\text{Total Premium}}$
+
+2.  $\text{Claim Frequency} = \frac{\text{Total Claims}}{\text{Total Exposure}}$
+
+3.  $\text{Claim Severity} = \frac{\text{Total Incurred}}{\text{Total Claims}}$
+
+[**Policy Type Descriptions:**]{.underline}
+
+- **TP** -\> Basic third-party liability coverage only
+
+- **TPG** -\> Third-party liability with glass coverage
+
+- **CC** -\> Third-party liability combined with two or more additional coverages (theft, fire, property or glass)
+
+- **COMP_E** -\> Comprehensive without excess
+
+- **COMP_N** -\> Comprehensive without excess
