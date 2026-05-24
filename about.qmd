@@ -5,5 +5,5 @@ title: "About"
 About this site
 
 ```{r}
-1 + 1
+"Welcome to my portfolio of visual data analyses, done as part of my course work at IS 608 Visual Analysis and Applications at SMU's MITB program"
 ```
