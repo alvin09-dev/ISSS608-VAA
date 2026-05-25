@@ -1,9 +1,6 @@
 ---
 title: "Hands-on Exercise 03"
 author: "Alvin Matthew"
-execute:
-  warning: false
-  message: false
 ---
 
 # Getting Started
@@ -21,9 +18,7 @@ pacman::p_load(ggiraph, plotly,
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
-# Part 1: Programming interactive data visualisation
-
-## Aesthetic using *tooltip* (Hover over the dots for values)
+# Aesthetic using *tooltip* (Hover over the dots for values)
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -42,7 +37,7 @@ girafe(
 )
 ```
 
-## Displaying multiple infomation on tooltip
+# Displaying multiple infomation on tooltip
 
 ```{r}
 exam_data$tooltip <- c(paste0(     
@@ -65,7 +60,7 @@ girafe(
 )
 ```
 
-## Tooltip customization
+# Tooltip customization
 
 ```{r}
 tooltip_css <- "background-color:white; #<<
@@ -90,7 +85,7 @@ girafe(
 )                                        
 ```
 
-## Tooltip to display statistics
+# Tooltip to display statistics
 
 ```{r}
 tooltip <- function(y, ymax, accuracy = .01) {
@@ -119,7 +114,7 @@ girafe(ggobj = gg_point,
        height_svg = 8 * 0.618)                              
 ```
 
-## Hover effect with data_id aesthetic
+# Hover effect with data_id aesthetic
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -138,7 +133,7 @@ girafe(
 )                                        
 ```
 
-## Styling hover effect
+# Styling hover effect
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -161,7 +156,7 @@ girafe(
 )                 
 ```
 
-## Combination of tooltip & hover effect
+# Combination of tooltip & hover effect
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -185,7 +180,7 @@ girafe(
 )                                        
 ```
 
-## Click effect with *onclick* (Click to show website)
+# Click effect with *onclick* (Click to show website)
 
 ```{r}
 exam_data$onclick <- sprintf("window.open(\"%s%s\")",
@@ -207,7 +202,7 @@ girafe(
   height_svg = 6*0.618)                                        
 ```
 
-## Multiple views with *ggiraph*
+# Multiple views with *ggiraph*
 
 ```{r}
 p1 <- ggplot(data=exam_data, 
@@ -242,7 +237,7 @@ girafe(code = print(p1 + p2),
        ) 
 ```
 
-## Interactive scatterplot
+# Interactive scatterplot
 
 ```{r}
 p <- ggplot(data=exam_data, 
@@ -254,7 +249,7 @@ p <- ggplot(data=exam_data,
 ggplotly(p)
 ```
 
-## Multiple view of interactive scatterplots
+# Multiple view of interactive scatterplots
 
 ```{r}
 d <- highlight_key(exam_data)
@@ -275,7 +270,7 @@ subplot(ggplotly(p1),
         ggplotly(p2))
 ```
 
-## Cross-talk methods
+# Cross-talk methods
 
 ```{r}
 d <- highlight_key(exam_data) 
@@ -313,7 +308,7 @@ globalPop <- read_xls("data/GlobalPopulation.xls",
   mutate(Year = as.integer(Year))
 ```
 
-## Static population bubble plot
+# Static population bubble plot
 
 ```{r}
 ggplot(globalPop, aes(x = Old, y = Young, 
@@ -328,7 +323,7 @@ ggplot(globalPop, aes(x = Old, y = Young,
        y = '% Young') 
 ```
 
-## Animated bubble plot
+# Animated bubble plot
 
 ```{r}
 ggplot(globalPop, aes(x = Old, y = Young, 
@@ -345,7 +340,7 @@ ggplot(globalPop, aes(x = Old, y = Young,
   ease_aes('linear')          
 ```
 
-## Animated bubble plot with *ggplotly* (hover over points for info)
+# Animated bubble plot with *ggplotly* (hover over points for info)
 
 ```{r}
 #| warning: false
@@ -367,7 +362,7 @@ gg <- suppressWarnings(
 ggplotly(gg)
 ```
 
-## Building animated bubble plot using *plot_ly()*
+# Building animated bubble plot using *plot_ly()*
 
 ```{r}
 #| warning: false
@@ -387,3 +382,4 @@ bp <- globalPop %>%
   layout(showlegend = FALSE)
 bp
 ```
+
