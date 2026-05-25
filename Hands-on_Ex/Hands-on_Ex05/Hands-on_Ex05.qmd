@@ -482,7 +482,7 @@ ggparcoord(data = wh,
   theme(axis.text.x = element_text(angle = 30))
 ```
 
-##  Adjusting the rotated x-axis text label
+## Adjusting the rotated x-axis text label
 
 ```{r}
 #| fig-width: 14

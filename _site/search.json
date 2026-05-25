@@ -306,5 +306,572 @@
     "title": "Take-home Exercise 1",
     "section": "Frequency & Severity Matrix of Claim Types",
     "text": "Frequency & Severity Matrix of Claim Types\n\n\nHigh Severity, Low Frequency: Fire and Injury\nLow Severity, High Frequency: Windshield/Glass and Property\nLow Severity, Low Frequency: Theft\n* Refer to Appendix for formulas used"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html",
+    "title": "Hands-on Exercise 04",
+    "section": "",
+    "text": "pacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)\n\n\n\n\n\nexam &lt;- read_csv(\"data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#packages-setup",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#packages-setup",
+    "title": "Hands-on Exercise 04",
+    "section": "",
+    "text": "pacman::p_load(ggdist, ggridges, ggthemes,\n               colorspace, tidyverse)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#data-import",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#data-import",
+    "title": "Hands-on Exercise 04",
+    "section": "",
+    "text": "exam &lt;- read_csv(\"data/Exam_data.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-ridgeline-graph-using-ggridges",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-ridgeline-graph-using-ggridges",
+    "title": "Hands-on Exercise 04",
+    "section": "Plotting ridgeline graph using ggridges",
+    "text": "Plotting ridgeline graph using ggridges\n\nggplot(exam, \n       aes(x = ENGLISH, \n           y = CLASS)) +\n  geom_density_ridges(\n    scale = 3,\n    rel_min_height = 0.01,\n    bandwidth = 3.4,\n    fill = lighten(\"#7097BB\", .3),\n    color = \"white\"\n  ) +\n  scale_x_continuous(\n    name = \"English grades\",\n    expand = c(0, 0)\n    ) +\n  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +\n  theme_ridges()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#varying-fill-colours-along-x-axis",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#varying-fill-colours-along-x-axis",
+    "title": "Hands-on Exercise 04",
+    "section": "Varying fill colours along X-axis",
+    "text": "Varying fill colours along X-axis\n\nggplot(exam, \n       aes(x = ENGLISH, \n           y = CLASS,\n           fill = stat(x))) +\n  geom_density_ridges_gradient(\n    scale = 3,\n    rel_min_height = 0.01) +\n  scale_fill_viridis_c(name = \"Temp. [F]\",\n                       option = \"C\") +\n  scale_x_continuous(\n    name = \"English grades\",\n    expand = c(0, 0)\n  ) +\n  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +\n  theme_ridges()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#mapping-probabilities-onto-colour",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#mapping-probabilities-onto-colour",
+    "title": "Hands-on Exercise 04",
+    "section": "Mapping probabilities onto colour",
+    "text": "Mapping probabilities onto colour\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = 0.5 - abs(0.5-stat(ecdf)))) +\n  stat_density_ridges(geom = \"density_ridges_gradient\", \n                      calc_ecdf = TRUE) +\n  scale_fill_viridis_c(name = \"Tail probability\",\n                       direction = -1) +\n  theme_ridges()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#ridgeline-plots-with-quantile-lines",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#ridgeline-plots-with-quantile-lines",
+    "title": "Hands-on Exercise 04",
+    "section": "Ridgeline plots with quantile lines",
+    "text": "Ridgeline plots with quantile lines\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = 4,\n    quantile_lines = TRUE) +\n  scale_fill_viridis_d(name = \"Quartiles\") +\n  theme_ridges()\n\n\n\n\n\n\n\n\n\nggplot(exam,\n       aes(x = ENGLISH, \n           y = CLASS, \n           fill = factor(stat(quantile))\n           )) +\n  stat_density_ridges(\n    geom = \"density_ridges_gradient\",\n    calc_ecdf = TRUE, \n    quantiles = c(0.025, 0.975)\n    ) +\n  scale_fill_manual(\n    name = \"Probability\",\n    values = c(\"#FF0000A0\", \"#A0A0A0A0\", \"#0000FFA0\"),\n    labels = c(\"(0, 0.025]\", \"(0.025, 0.975]\", \"(0.975, 1]\")\n  ) +\n  theme_ridges()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-half-eye-graph",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-half-eye-graph",
+    "title": "Hands-on Exercise 04",
+    "section": "Plotting half eye graph",
+    "text": "Plotting half eye graph\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-box-plot-using-geom_boxplot",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#adding-box-plot-using-geom_boxplot",
+    "title": "Hands-on Exercise 04",
+    "section": "Adding box plot using geom_boxplot()",
+    "text": "Adding box plot using geom_boxplot()\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#flipping-to-horizontal",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#flipping-to-horizontal",
+    "title": "Hands-on Exercise 04",
+    "section": "Flipping to horizontal",
+    "text": "Flipping to horizontal\n\nggplot(exam, \n       aes(x = RACE, \n           y = ENGLISH)) +\n  stat_halfeye(adjust = 0.5,\n               justification = -0.2,\n               .width = 0,\n               point_colour = NA) +\n  geom_boxplot(width = .20,\n               outlier.shape = NA) +\n  stat_dots(side = \"left\", \n            justification = 1.2, \n            binwidth = NA,\n            dotsize = 1.5) +\n  coord_flip() +\n  theme_economist()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-sample-test-gghistostats-method",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-sample-test-gghistostats-method",
+    "title": "Hands-on Exercise 04",
+    "section": "One sample test: gghistostats() method",
+    "text": "One sample test: gghistostats() method\n\nset.seed(1234)\n\ngghistostats(\n  data = exam,\n  x = ENGLISH,\n  type = \"bayes\",\n  test.value = 60,\n  xlab = \"English scores\"\n)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#two-sample-mean-test-ggbetweenstats",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#two-sample-mean-test-ggbetweenstats",
+    "title": "Hands-on Exercise 04",
+    "section": "Two-sample mean test: ggbetweenstats()",
+    "text": "Two-sample mean test: ggbetweenstats()\n\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"np\",\n  messages = FALSE\n)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-way-anova-test-ggbetweenstats-method",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#one-way-anova-test-ggbetweenstats-method",
+    "title": "Hands-on Exercise 04",
+    "section": "One way ANOVA test: ggbetweenstats() method",
+    "text": "One way ANOVA test: ggbetweenstats() method\n\nggbetweenstats(\n  data = exam,\n  x = RACE, \n  y = ENGLISH,\n  type = \"p\",\n  mean.ci = TRUE, \n  pairwise.comparisons = TRUE, \n  pairwise.display = \"s\",\n  p.adjust.method = \"fdr\",\n  messages = FALSE\n)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#significant-test-of-correlation-ggscatterstats",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#significant-test-of-correlation-ggscatterstats",
+    "title": "Hands-on Exercise 04",
+    "section": "Significant test of correlation: ggscatterstats()",
+    "text": "Significant test of correlation: ggscatterstats()\n\nggscatterstats(\n  data = exam,\n  x = MATHS,\n  y = ENGLISH,\n  marginal = FALSE,\n  )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#significant-test-of-association-dependence-ggbarstats-methods",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#significant-test-of-association-dependence-ggbarstats-methods",
+    "title": "Hands-on Exercise 04",
+    "section": "Significant Test of Association (Dependence) : ggbarstats() methods",
+    "text": "Significant Test of Association (Dependence) : ggbarstats() methods\n\nexam1 &lt;- exam %&gt;% \n  mutate(MATHS_bins = \n           cut(MATHS, \n               breaks = c(0,60,75,85,100))\n)\n\n\nggbarstats(exam1, \n           x = MATHS_bins, \n           y = GENDER)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#part-3-visualising-uncertainty",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#part-3-visualising-uncertainty",
+    "title": "Hands-on Exercise 04",
+    "section": "Part 3: Visualising Uncertainty",
+    "text": "Part 3: Visualising Uncertainty\n\npacman::p_load(plotly, crosstalk, DT,\n               gganimate)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#uncertainty-of-point-estimates-ggplot2-methods",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#uncertainty-of-point-estimates-ggplot2-methods",
+    "title": "Hands-on Exercise 04",
+    "section": "Uncertainty of point estimates: ggplot2 methods",
+    "text": "Uncertainty of point estimates: ggplot2 methods\n\nmy_sum &lt;- exam %&gt;%\n  group_by(RACE) %&gt;%\n  summarise(\n    n=n(),\n    mean=mean(MATHS),\n    sd=sd(MATHS)\n    ) %&gt;%\n  mutate(se=sd/sqrt(n-1))\n\n\nknitr::kable(head(my_sum), format = 'html')\n\n\n\n\nRACE\nn\nmean\nsd\nse\n\n\n\n\nChinese\n193\n76.50777\n15.69040\n1.132357\n\n\nIndian\n12\n60.66667\n23.35237\n7.041005\n\n\nMalay\n108\n57.44444\n21.13478\n2.043177\n\n\nOthers\n9\n69.66667\n10.72381\n3.791438"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-standard-error-bars-of-point-estimates",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-standard-error-bars-of-point-estimates",
+    "title": "Hands-on Exercise 04",
+    "section": "Plotting standard error bars of point estimates",
+    "text": "Plotting standard error bars of point estimates\n\nggplot(my_sum) +\n  geom_errorbar(\n    aes(x=RACE, \n        ymin=mean-se, \n        ymax=mean+se), \n    width=0.2, \n    colour=\"black\", \n    alpha=0.9, \n    linewidth=0.5) +\n  geom_point(aes\n           (x=RACE, \n            y=mean), \n           stat=\"identity\", \n           color=\"red\",\n           size = 1.5,\n           alpha=1) +\n  ggtitle(\"Standard error of mean maths score by rac\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-confidence-interval-of-point-estimates",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#plotting-confidence-interval-of-point-estimates",
+    "title": "Hands-on Exercise 04",
+    "section": "Plotting confidence interval of point estimates",
+    "text": "Plotting confidence interval of point estimates\n\nggplot(my_sum) +\n  geom_errorbar(\n    aes(x=reorder(RACE, -mean), \n        ymin=mean-1.96*se, \n        ymax=mean+1.96*se), \n    width=0.2, \n    colour=\"black\", \n    alpha=0.9, \n    linewidth=0.5) +\n  geom_point(aes\n           (x=RACE, \n            y=mean), \n           stat=\"identity\", \n           color=\"red\",\n           size = 1.5,\n           alpha=1) +\n  labs(x = \"Maths score\",\n       title = \"95% confidence interval of mean maths score by race\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#uncertainty-of-point-estimates-with-interactive-error-bars",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#uncertainty-of-point-estimates-with-interactive-error-bars",
+    "title": "Hands-on Exercise 04",
+    "section": "Uncertainty of point estimates with interactive error bars",
+    "text": "Uncertainty of point estimates with interactive error bars\n\nshared_df = SharedData$new(my_sum)\n\nbscols(widths = c(4,8),\n       ggplotly((ggplot(shared_df) +\n                   geom_errorbar(aes(\n                     x=reorder(RACE, -mean),\n                     ymin=mean-2.58*se, \n                     ymax=mean+2.58*se), \n                     width=0.2, \n                     colour=\"black\", \n                     alpha=0.9, \n                     size=0.5) +\n                   geom_point(aes(\n                     x=RACE, \n                     y=mean, \n                     text = paste(\"Race:\", `RACE`, \n                                  \"&lt;br&gt;N:\", `n`,\n                                  \"&lt;br&gt;Avg. Scores:\", round(mean, digits = 2),\n                                  \"&lt;br&gt;95% CI:[\", \n                                  round((mean-2.58*se), digits = 2), \",\",\n                                  round((mean+2.58*se), digits = 2),\"]\")),\n                     stat=\"identity\", \n                     color=\"red\", \n                     size = 1.5, \n                     alpha=1) + \n                   xlab(\"Race\") + \n                   ylab(\"Average Scores\") + \n                   theme_minimal() + \n                   theme(axis.text.x = element_text(\n                     angle = 45, vjust = 0.5, hjust=1)) +\n                   ggtitle(\"99% Confidence interval of average /&lt;br&gt;maths scores by race\")), \n                tooltip = \"text\"), \n       DT::datatable(shared_df, \n                     rownames = FALSE, \n                     class=\"compact\", \n                     width=\"100%\", \n                     options = list(pageLength = 10,\n                                    scrollX=T), \n                     colnames = c(\"No. of pupils\", \n                                  \"Avg Scores\",\n                                  \"Std Dev\",\n                                  \"Std Error\")) %&gt;%\n         formatRound(columns=c('mean', 'sd', 'se'),\n                     digits=2))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#uncertainty-of-point-estimates-ggdist-methods",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#uncertainty-of-point-estimates-ggdist-methods",
+    "title": "Hands-on Exercise 04",
+    "section": "Uncertainty of point estimates: ggdist methods",
+    "text": "Uncertainty of point estimates: ggdist methods\n\nexam %&gt;%\n  ggplot(aes(x = RACE, \n             y = MATHS)) +\n  stat_pointinterval() +\n  labs(\n    title = \"Visualising confidence intervals of mean math score\",\n    subtitle = \"Mean Point + Multiple-interval plot\")\n\n\n\n\n\n\n\n\n\nWith different arguments as stated below:\n\n.width = 0.95\n.point = median\n.interval = qi\n\n\nexam %&gt;%\n  ggplot(aes(x = RACE, y = MATHS)) +\n  stat_pointinterval(.width = 0.95,\n  .point = median,\n  .interval = qi) +\n  labs(\n    title = \"Visualising confidence intervals of median math score\",\n    subtitle = \"Median Point + Multiple-interval plot\")\n\n\n\n\n\n\n\n\n\n\nPlot with intervals at 95% and 99%\n\nexam %&gt;%\n  ggplot(aes(x = RACE, \n             y = MATHS)) +\n  stat_pointinterval(\n    show.legend = FALSE) +   \n  labs(\n    title = \"Visualising confidence intervals of mean math score\",\n    subtitle = \"Mean Point + Multiple-interval plot\")\n\n\n\n\n\n\n\n\n\n\nVisual using stat_gradientinterval()\n\nexam %&gt;%\n  ggplot(aes(x = RACE, \n             y = MATHS)) +\n  stat_gradientinterval(   \n    fill = \"skyblue\",      \n    show.legend = TRUE     \n  ) +                        \n  labs(\n    title = \"Visualising confidence intervals of mean math score\",\n    subtitle = \"Gradient + interval plot\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#basic-plot-using-funnelplotr",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#basic-plot-using-funnelplotr",
+    "title": "Hands-on Exercise 04",
+    "section": "Basic plot using FunnelPlotR",
+    "text": "Basic plot using FunnelPlotR\n\nfunnel_plot(\n  .data = covid19,\n  numerator = Positive,\n  denominator = Death,\n  group = `Sub-district`\n)\n\n\n\n\n\n\n\n\nA funnel plot object with 267 points of which 0 are outliers. \nPlot is adjusted for overdispersion."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#makeover-1",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#makeover-1",
+    "title": "Hands-on Exercise 04",
+    "section": "Makeover 1",
+    "text": "Makeover 1\n\nfunnel_plot(\n  .data = covid19,\n  numerator = Death,\n  denominator = Positive,\n  group = `Sub-district`,\n  data_type = \"PR\",     #&lt;&lt;\n  xrange = c(0, 6500),  #&lt;&lt;\n  yrange = c(0, 0.05)   #&lt;&lt;\n)\n\n\n\n\n\n\n\n\nA funnel plot object with 267 points of which 7 are outliers. \nPlot is adjusted for overdispersion."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#makeover-2",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#makeover-2",
+    "title": "Hands-on Exercise 04",
+    "section": "Makeover 2",
+    "text": "Makeover 2\n\nfunnel_plot(\n  .data = covid19,\n  numerator = Death,\n  denominator = Positive,\n  group = `Sub-district`,\n  data_type = \"PR\",   \n  xrange = c(0, 6500),  \n  yrange = c(0, 0.05),\n  label = NA,\n  title = \"Cumulative COVID-19 Fatality Rate by Cumulative Total Number of COVID-19 Positive Cases\", #&lt;&lt;           \n  x_label = \"Cumulative COVID-19 Positive Cases\", #&lt;&lt;\n  y_label = \"Cumulative Fatality Rate\"  #&lt;&lt;\n)\n\n\n\n\n\n\n\n\nA funnel plot object with 267 points of which 7 are outliers. \nPlot is adjusted for overdispersion."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#funnel-plot-for-fair-visual-comparison-ggplot2-methods",
+    "href": "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04.html#funnel-plot-for-fair-visual-comparison-ggplot2-methods",
+    "title": "Hands-on Exercise 04",
+    "section": "Funnel Plot for Fair Visual Comparison: ggplot2 methods",
+    "text": "Funnel Plot for Fair Visual Comparison: ggplot2 methods\n\nComputing basic derived fields\n\ndf &lt;- covid19 %&gt;%\n  mutate(rate = Death / Positive) %&gt;%\n  mutate(rate.se = sqrt((rate*(1-rate)) / (Positive))) %&gt;%\n  filter(rate &gt; 0)\n\n\nfit.mean &lt;- weighted.mean(df$rate, 1/df$rate.se^2)\n\n\n\nCalculate lower and upper limits for 95% and 99.9% CI\n\nnumber.seq &lt;- seq(1, max(df$Positive), 1)\nnumber.ll95 &lt;- fit.mean - 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \nnumber.ul95 &lt;- fit.mean + 1.96 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \nnumber.ll999 &lt;- fit.mean - 3.29 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \nnumber.ul999 &lt;- fit.mean + 3.29 * sqrt((fit.mean*(1-fit.mean)) / (number.seq)) \ndfCI &lt;- data.frame(number.ll95, number.ul95, number.ll999, \n                   number.ul999, number.seq, fit.mean)\n\n\n\nPlotting static funnel plot\n\np &lt;- ggplot(df, aes(x = Positive, y = rate)) +\n  geom_point(aes(label=`Sub-district`), \n             alpha=0.4) +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ll95), \n            size = 0.4, \n            colour = \"grey40\", \n            linetype = \"dashed\") +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ul95), \n            size = 0.4, \n            colour = \"grey40\", \n            linetype = \"dashed\") +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ll999), \n            size = 0.4, \n            colour = \"grey40\") +\n  geom_line(data = dfCI, \n            aes(x = number.seq, \n                y = number.ul999), \n            size = 0.4, \n            colour = \"grey40\") +\n  geom_hline(data = dfCI, \n             aes(yintercept = fit.mean), \n             size = 0.4, \n             colour = \"grey40\") +\n  coord_cartesian(ylim=c(0,0.05)) +\n  annotate(\"text\", x = 1, y = -0.13, label = \"95%\", size = 3, colour = \"grey40\") + \n  annotate(\"text\", x = 4.5, y = -0.18, label = \"99%\", size = 3, colour = \"grey40\") + \n  ggtitle(\"Cumulative Fatality Rate by Cumulative Number of COVID-19 Cases\") +\n  xlab(\"Cumulative Number of COVID-19 Cases\") + \n  ylab(\"Cumulative Fatality Rate\") +\n  theme_light() +\n  theme(plot.title = element_text(size=12),\n        legend.position = c(0.91,0.85), \n        legend.title = element_text(size=7),\n        legend.text = element_text(size=7),\n        legend.background = element_rect(colour = \"grey60\", linetype = \"dotted\"),\n        legend.key.height = unit(0.3, \"cm\"))\np\n\n\n\n\n\n\n\n\n\n\nInteractive Funnel Plot: plotly + ggplot2\n\nfp_ggplotly &lt;- ggplotly(p,\n  tooltip = c(\"label\", \n              \"x\", \n              \"y\"))\nfp_ggplotly"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html",
+    "title": "Take-home Exercise 5",
+    "section": "",
+    "text": "pacman::p_load(plotly, ggtern, tidyverse)\n\n\n#Reading the data into R environment\npop_data &lt;- read_csv(\"data/respopagsex2000to2018_tidy.csv\")\n\n\n#Deriving the young, economy active and old measures\nagpop_mutated &lt;- pop_data %&gt;%\n  mutate(`Year` = as.character(Year))%&gt;%\n  spread(AG, Population) %&gt;%\n  mutate(YOUNG = rowSums(.[4:8]))%&gt;%\n  mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%\n  mutate(OLD = rowSums(.[17:21])) %&gt;%\n  mutate(TOTAL = rowSums(.[22:24])) %&gt;%\n  filter(Year == 2018)%&gt;%\n  filter(TOTAL &gt; 0)\n\n\n\n\n\n#Building the static ternary plot\nggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point()\n\n\n\n\n\n\n\n\n\n#Building the static ternary plot\nggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point() +\n  labs(title=\"Population structure, 2015\") +\n  theme_rgbw()\n\n\n\n\n\n\n\n\n\n\n\n\n# reusable function for creating annotation object\nlabel &lt;- function(txt) {\n  list(\n    text = txt, \n    x = 0.1, y = 1,\n    ax = 0, ay = 0,\n    xref = \"paper\", yref = \"paper\", \n    align = \"center\",\n    font = list(family = \"serif\", size = 15, color = \"white\"),\n    bgcolor = \"#b3b3b3\", bordercolor = \"black\", borderwidth = 2\n  )\n}\n\n# reusable function for axis formatting\naxis &lt;- function(txt) {\n  list(\n    title = txt, tickformat = \".0%\", tickfont = list(size = 10)\n  )\n}\n\nternaryAxes &lt;- list(\n  aaxis = axis(\"Young\"), \n  baxis = axis(\"Active\"), \n  caxis = axis(\"Old\")\n)\n\n# Initiating a plotly visualization \nplot_ly(\n  agpop_mutated, \n  a = ~YOUNG, \n  b = ~ACTIVE, \n  c = ~OLD, \n  color = I(\"black\"), \n  type = \"scatterternary\"\n) %&gt;%\n  layout(\n    annotations = label(\"Ternary Markers\"), \n    ternary = ternaryAxes\n  )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#setting-up-data-preparation",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#setting-up-data-preparation",
+    "title": "Take-home Exercise 5",
+    "section": "",
+    "text": "pacman::p_load(plotly, ggtern, tidyverse)\n\n\n#Reading the data into R environment\npop_data &lt;- read_csv(\"data/respopagsex2000to2018_tidy.csv\")\n\n\n#Deriving the young, economy active and old measures\nagpop_mutated &lt;- pop_data %&gt;%\n  mutate(`Year` = as.character(Year))%&gt;%\n  spread(AG, Population) %&gt;%\n  mutate(YOUNG = rowSums(.[4:8]))%&gt;%\n  mutate(ACTIVE = rowSums(.[9:16]))  %&gt;%\n  mutate(OLD = rowSums(.[17:21])) %&gt;%\n  mutate(TOTAL = rowSums(.[22:24])) %&gt;%\n  filter(Year == 2018)%&gt;%\n  filter(TOTAL &gt; 0)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-a-static-ternary-diagram",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-a-static-ternary-diagram",
+    "title": "Take-home Exercise 5",
+    "section": "",
+    "text": "#Building the static ternary plot\nggtern(data=agpop_mutated,aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point()\n\n\n\n\n\n\n\n\n\n#Building the static ternary plot\nggtern(data=agpop_mutated, aes(x=YOUNG,y=ACTIVE, z=OLD)) +\n  geom_point() +\n  labs(title=\"Population structure, 2015\") +\n  theme_rgbw()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-an-interative-ternary-diagram",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-an-interative-ternary-diagram",
+    "title": "Take-home Exercise 5",
+    "section": "",
+    "text": "# reusable function for creating annotation object\nlabel &lt;- function(txt) {\n  list(\n    text = txt, \n    x = 0.1, y = 1,\n    ax = 0, ay = 0,\n    xref = \"paper\", yref = \"paper\", \n    align = \"center\",\n    font = list(family = \"serif\", size = 15, color = \"white\"),\n    bgcolor = \"#b3b3b3\", bordercolor = \"black\", borderwidth = 2\n  )\n}\n\n# reusable function for axis formatting\naxis &lt;- function(txt) {\n  list(\n    title = txt, tickformat = \".0%\", tickfont = list(size = 10)\n  )\n}\n\nternaryAxes &lt;- list(\n  aaxis = axis(\"Young\"), \n  baxis = axis(\"Active\"), \n  caxis = axis(\"Old\")\n)\n\n# Initiating a plotly visualization \nplot_ly(\n  agpop_mutated, \n  a = ~YOUNG, \n  b = ~ACTIVE, \n  c = ~OLD, \n  color = I(\"black\"), \n  type = \"scatterternary\"\n) %&gt;%\n  layout(\n    annotations = label(\"Ternary Markers\"), \n    ternary = ternaryAxes\n  )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation",
+    "title": "Take-home Exercise 5",
+    "section": "Data preparation",
+    "text": "Data preparation\n\npacman::p_load(corrplot, ggstatsplot)\n\n\nwine &lt;- read_csv(\"data/wine_quality.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#building-a-basic-correlation-matrix",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#building-a-basic-correlation-matrix",
+    "title": "Take-home Exercise 5",
+    "section": "Building a basic correlation matrix",
+    "text": "Building a basic correlation matrix\n\npairs(wine[,1:11])\n\n\n\n\n\n\n\n\n\npairs(wine[,2:12])"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#drawing-the-lower-half",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#drawing-the-lower-half",
+    "title": "Take-home Exercise 5",
+    "section": "Drawing the lower half",
+    "text": "Drawing the lower half\n\npairs(wine[,2:12], upper.panel = NULL)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#drawing-the-upper-half",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#drawing-the-upper-half",
+    "title": "Take-home Exercise 5",
+    "section": "Drawing the upper half",
+    "text": "Drawing the upper half\n\npairs(wine[,2:12], lower.panel = NULL)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#including-correlation-coefficients",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#including-correlation-coefficients",
+    "title": "Take-home Exercise 5",
+    "section": "Including correlation coefficients",
+    "text": "Including correlation coefficients\n\npanel.cor &lt;- function(x, y, digits=2, prefix=\"\", cex.cor, ...) {\nusr &lt;- par(\"usr\")\non.exit(par(usr))\npar(usr = c(0, 1, 0, 1))\nr &lt;- abs(cor(x, y, use=\"complete.obs\"))\ntxt &lt;- format(c(r, 0.123456789), digits=digits)[1]\ntxt &lt;- paste(prefix, txt, sep=\"\")\nif(missing(cex.cor)) cex.cor &lt;- 0.8/strwidth(txt)\ntext(0.5, 0.5, txt, cex = cex.cor * (1 + r) / 2)\n}\n\npairs(wine[,2:12], \n      upper.panel = panel.cor)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#building-multiple-plots",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#building-multiple-plots",
+    "title": "Take-home Exercise 5",
+    "section": "Building multiple plots",
+    "text": "Building multiple plots\n\nggstatsplot::grouped_ggcorrmat(\n  data = wine,\n  cor.vars = 1:11,\n  grouping.var = type,       # Replace 'type' with your column name (e.g., color, wine_type)\n  type = \"robust\",           # Changes correlation to 'Winsorized Pearson'\n  matrix.type = \"lower\",     # Flips the matrix to the lower-triangle view\n  colors = c(\"#e66101\", \"white\", \"#5e3c99\") # Optional: Adjusts colors to mimic a custom palette\n)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#using-corrplot",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#using-corrplot",
+    "title": "Take-home Exercise 5",
+    "section": "Using corrplot",
+    "text": "Using corrplot\n\nwine.cor &lt;- cor(wine[, 1:11])\ncorrplot(wine.cor)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-geometrics",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-geometrics",
+    "title": "Take-home Exercise 5",
+    "section": "Working with geometrics",
+    "text": "Working with geometrics\n\ncorrplot(wine.cor, \n         method = \"ellipse\") \n\n\n\n\n\n\n\n\nWorking with layout\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\")\n\n\n\n\n\n\n\n\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         type=\"lower\",\n         diag = FALSE,\n         tl.col = \"black\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-mixed-layout",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-mixed-layout",
+    "title": "Take-home Exercise 5",
+    "section": "Working with mixed layout",
+    "text": "Working with mixed layout\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               tl.col = \"black\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#combining-corrgram-with-the-significant-test",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#combining-corrgram-with-the-significant-test",
+    "title": "Take-home Exercise 5",
+    "section": "Combining corrgram with the significant test",
+    "text": "Combining corrgram with the significant test\n\nwine.sig = cor.mtest(wine.cor, conf.level= .95)\ncorrplot(wine.cor,\n         method = \"number\",\n         type = \"lower\",\n         diag = FALSE,\n         tl.col = \"black\",\n         tl.srt = 45,\n         p.mat = wine.sig$p,\n         sig.level = .05)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#reorder-a-corrgram",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#reorder-a-corrgram",
+    "title": "Take-home Exercise 5",
+    "section": "Reorder a corrgram",
+    "text": "Reorder a corrgram\n\ncorrplot.mixed(wine.cor, \n               lower = \"ellipse\", \n               upper = \"number\",\n               tl.pos = \"lt\",\n               diag = \"l\",\n               order=\"AOE\",\n               tl.col = \"black\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#reordering-a-correlation-matrix-using-hclust",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#reordering-a-correlation-matrix-using-hclust",
+    "title": "Take-home Exercise 5",
+    "section": "Reordering a correlation matrix using hclust",
+    "text": "Reordering a correlation matrix using hclust\n\ncorrplot(wine.cor, \n         method = \"ellipse\", \n         tl.pos = \"lt\",\n         tl.col = \"black\",\n         order=\"hclust\",\n         hclust.method = \"ward.D\",\n         addrect = 3)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation-1",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation-1",
+    "title": "Take-home Exercise 5",
+    "section": "Data preparation",
+    "text": "Data preparation\n\npacman::p_load(seriation, dendextend, heatmaply)\n\n\nwh &lt;- read_csv(\"data/WHData-2018.csv\")\n\n\nwh1 &lt;- dplyr::select(wh, c(3, 7:12))\nwh_matrix &lt;- data.matrix(wh)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#static-heatmap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#static-heatmap",
+    "title": "Take-home Exercise 5",
+    "section": "Static Heatmap",
+    "text": "Static Heatmap\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      Rowv=NA, Colv=NA)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#cluster-heatmap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#cluster-heatmap",
+    "title": "Take-home Exercise 5",
+    "section": "Cluster heatmap",
+    "text": "Cluster heatmap\n\nwh_heatmap &lt;- heatmap(wh_matrix)\n\n\n\n\n\n\n\n\n\nwh_heatmap &lt;- heatmap(wh_matrix,\n                      scale=\"column\",\n                      cexRow = 0.6, \n                      cexCol = 0.8,\n                      margins = c(10, 4))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#creating-interactive-heatmap-working-with-heatmaply",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#creating-interactive-heatmap-working-with-heatmaply",
+    "title": "Take-home Exercise 5",
+    "section": "Creating interactive heatmap: Working with heatmaply",
+    "text": "Creating interactive heatmap: Working with heatmaply\n\nheatmaply(mtcars)\n\n\n\n\n\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)])"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-transformation-scaling-method",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-transformation-scaling-method",
+    "title": "Take-home Exercise 5",
+    "section": "Data transformation: Scaling Method",
+    "text": "Data transformation: Scaling Method\n\nheatmaply(wh_matrix[, -c(1, 2, 4, 5)],\n          scale = \"column\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-transformation-normalising-method",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-transformation-normalising-method",
+    "title": "Take-home Exercise 5",
+    "section": "Data transformation: Normalising Method",
+    "text": "Data transformation: Normalising Method\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-transformation-percentising-method",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-transformation-percentising-method",
+    "title": "Take-home Exercise 5",
+    "section": "Data transformation: Percentising Method",
+    "text": "Data transformation: Percentising Method\n\nheatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#clustering-algorithm-manual-approach",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#clustering-algorithm-manual-approach",
+    "title": "Take-home Exercise 5",
+    "section": "Clustering algorithm: manual approach",
+    "text": "Clustering algorithm: manual approach\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          dist_method = \"euclidean\",\n          hclust_method = \"ward.D\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#clustering-algorithm-statistical-approach",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#clustering-algorithm-statistical-approach",
+    "title": "Take-home Exercise 5",
+    "section": "Clustering algorithm: statistical approach",
+    "text": "Clustering algorithm: statistical approach\n\nwh_d &lt;- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = \"euclidean\")\ndend_expend(wh_d)[[3]]\n\n  dist_methods hclust_methods     optim\n1      unknown         ward.D 0.6137851\n2      unknown        ward.D2 0.6289186\n3      unknown         single 0.4774362\n4      unknown       complete 0.6434009\n5      unknown        average 0.6701688\n6      unknown       mcquitty 0.5020102\n7      unknown         median 0.5901833\n8      unknown       centroid 0.6338734\n\n\n\nwh_clust &lt;- hclust(wh_d, method = \"average\")\nnum_k &lt;- find_k(wh_clust)\nplot(num_k)\n\n\n\n\n\n\n\n\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          dist_method = \"euclidean\",\n          hclust_method = \"average\",\n          k_row = 3)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-optimal-leaf-ordering",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-optimal-leaf-ordering",
+    "title": "Take-home Exercise 5",
+    "section": "Seriation (Optimal leaf ordering)",
+    "text": "Seriation (Optimal leaf ordering)\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"OLO\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-gruvaeus-wainer",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-gruvaeus-wainer",
+    "title": "Take-home Exercise 5",
+    "section": "Seriation (Gruvaeus & Wainer)",
+    "text": "Seriation (Gruvaeus & Wainer)\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"GW\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-mean",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-mean",
+    "title": "Take-home Exercise 5",
+    "section": "Seriation (mean)",
+    "text": "Seriation (mean)\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"mean\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-none",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#seriation-none",
+    "title": "Take-home Exercise 5",
+    "section": "Seriation (none)",
+    "text": "Seriation (none)\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"none\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-colour-palettes",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-colour-palettes",
+    "title": "Take-home Exercise 5",
+    "section": "Working with colour palettes",
+    "text": "Working with colour palettes\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          seriate = \"none\",\n          colors = Blues)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#finishing-touch",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#finishing-touch",
+    "title": "Take-home Exercise 5",
+    "section": "Finishing touch",
+    "text": "Finishing touch\n\nheatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),\n          Colv=NA,\n          seriate = \"none\",\n          colors = Blues,\n          k_row = 5,\n          margins = c(NA,200,60,NA),\n          fontsize_row = 4,\n          fontsize_col = 5,\n          main=\"World Happiness Score and Variables by Country, 2018 \\nDataTransformation using Normalise Method\",\n          xlab = \"World Happiness Indicators\",\n          ylab = \"World Countries\"\n          )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation-2",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation-2",
+    "title": "Take-home Exercise 5",
+    "section": "Data preparation",
+    "text": "Data preparation\n\npacman::p_load(GGally, parallelPlot)\n\n\nwh &lt;- read_csv(\"data/WHData-2018.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-a-simple-parallel-coordinates",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-a-simple-parallel-coordinates",
+    "title": "Take-home Exercise 5",
+    "section": "Plotting a simple parallel coordinates",
+    "text": "Plotting a simple parallel coordinates\n\nggparcoord(data = wh, \n           columns = c(7:12))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-a-parallel-coordinates-with-boxplot",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#plotting-a-parallel-coordinates-with-boxplot",
+    "title": "Take-home Exercise 5",
+    "section": "Plotting a parallel coordinates with boxplot",
+    "text": "Plotting a parallel coordinates with boxplot\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Parallel Coordinates Plot of World Happines Variables\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#parallel-coordinates-with-facet",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#parallel-coordinates-with-facet",
+    "title": "Take-home Exercise 5",
+    "section": "Parallel coordinates with facet",
+    "text": "Parallel coordinates with facet\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#rotating-x-axis-text-label",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#rotating-x-axis-text-label",
+    "title": "Take-home Exercise 5",
+    "section": "Rotating x-axis text label",
+    "text": "Rotating x-axis text label\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#adjusting-the-rotated-x-axis-text-label",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#adjusting-the-rotated-x-axis-text-label",
+    "title": "Take-home Exercise 5",
+    "section": "Adjusting the rotated x-axis text label",
+    "text": "Adjusting the rotated x-axis text label\n\nggparcoord(data = wh, \n           columns = c(7:12), \n           groupColumn = 2,\n           scale = \"uniminmax\",\n           alphaLines = 0.2,\n           boxplot = TRUE, \n           title = \"Multiple Parallel Coordinates Plots of World Happines Variables by Region\") +\n  facet_wrap(~ Region) + \n  theme(axis.text.x = element_text(angle = 30, hjust=1))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#basic-plot",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#basic-plot",
+    "title": "Take-home Exercise 5",
+    "section": "Basic plot",
+    "text": "Basic plot\n\nwh &lt;- wh %&gt;%\n  select(\"Happiness score\", c(7:12))\nparallelPlot(wh,\n             width = 320,\n             height = 250)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#rotate-axis-label",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#rotate-axis-label",
+    "title": "Take-home Exercise 5",
+    "section": "Rotate axis label",
+    "text": "Rotate axis label\n\nparallelPlot(wh,\n             rotateTitle = TRUE)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#changing-the-colour-scheme",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#changing-the-colour-scheme",
+    "title": "Take-home Exercise 5",
+    "section": "Changing the colour scheme",
+    "text": "Changing the colour scheme\n\nparallelPlot(wh,\n             continuousCS = \"YlOrRd\",\n             rotateTitle = TRUE)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#parallel-coordinates-plot-with-histogram",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#parallel-coordinates-plot-with-histogram",
+    "title": "Take-home Exercise 5",
+    "section": "Parallel coordinates plot with histogram",
+    "text": "Parallel coordinates plot with histogram\n\nhistoVisibility &lt;- rep(TRUE, ncol(wh))\nparallelPlot(wh,\n             rotateTitle = TRUE,\n             histoVisibility = histoVisibility)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation-3",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#data-preparation-3",
+    "title": "Take-home Exercise 5",
+    "section": "Data preparation",
+    "text": "Data preparation\n\npacman::p_load(treemap, treemapify)\n\n\nrealis2018 &lt;- read_csv(\"data/realis2018.csv\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#grouped-summaries-without-the-pipe",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#grouped-summaries-without-the-pipe",
+    "title": "Take-home Exercise 5",
+    "section": "Grouped summaries without the Pipe",
+    "text": "Grouped summaries without the Pipe\n\nrealis2018_grouped &lt;- group_by(realis2018, `Project Name`,\n                               `Planning Region`, `Planning Area`, \n                               `Property Type`, `Type of Sale`)\nrealis2018_summarised &lt;- summarise(realis2018_grouped, \n                          `Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE),\n                          `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n                          `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE), \n                          `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#grouped-summaries-with-the-pipe",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#grouped-summaries-with-the-pipe",
+    "title": "Take-home Exercise 5",
+    "section": "Grouped summaries with the pipe",
+    "text": "Grouped summaries with the pipe\n\nrealis2018_summarised &lt;- realis2018 %&gt;% \n  group_by(`Project Name`,`Planning Region`, \n           `Planning Area`, `Property Type`, \n           `Type of Sale`) %&gt;%\n  summarise(`Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE), \n            `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),\n            `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),\n            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#designing-a-static-treemap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#designing-a-static-treemap",
+    "title": "Take-home Exercise 5",
+    "section": "Designing a static treemap",
+    "text": "Designing a static treemap\n\nrealis2018_selected &lt;- realis2018_summarised %&gt;%\n  filter(`Property Type` == \"Condominium\", `Type of Sale` == \"Resale\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#using-basic-arguments",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#using-basic-arguments",
+    "title": "Take-home Exercise 5",
+    "section": "Using basic arguments",
+    "text": "Using basic arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-vcolor-and-type-arguments",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-vcolor-and-type-arguments",
+    "title": "Take-home Exercise 5",
+    "section": "Working with vColor and type arguments",
+    "text": "Working with vColor and type arguments\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type = \"value\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#the-value-type-treemap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#the-value-type-treemap",
+    "title": "Take-home Exercise 5",
+    "section": "The “value” type treemap",
+    "text": "The “value” type treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#the-manual-treemap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#the-manual-treemap",
+    "title": "Take-home Exercise 5",
+    "section": "The manual treemap",
+    "text": "The manual treemap\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"RdYlBu\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-algorithm-argument",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#working-with-algorithm-argument",
+    "title": "Take-home Exercise 5",
+    "section": "Working with algorithm argument",
+    "text": "Working with algorithm argument\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        algorithm = \"squarified\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#using-sort-id",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#using-sort-id",
+    "title": "Take-home Exercise 5",
+    "section": "Using sort ID",
+    "text": "Using sort ID\n\ntreemap(realis2018_selected,\n        index=c(\"Planning Region\", \"Planning Area\", \"Project Name\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"manual\",\n        palette=\"Blues\", \n        algorithm = \"pivotSize\",\n        sortID = \"Median Transacted Price\",\n        title=\"Resale Condominium by Planning Region and Area, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#designing-a-basic-treemap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#designing-a-basic-treemap",
+    "title": "Take-home Exercise 5",
+    "section": "Designing a basic treemap",
+    "text": "Designing a basic treemap\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`),\n       layout = \"scol\",\n       start = \"bottomleft\") + \n  geom_treemap() +\n  scale_fill_gradient(low = \"light blue\", high = \"blue\")"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#defining-hierarchy",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#defining-hierarchy",
+    "title": "Take-home Exercise 5",
+    "section": "Defining hierarchy",
+    "text": "Defining hierarchy\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`),\n       start = \"topleft\") + \n  geom_treemap()\n\n\n\n\n\n\n\n\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#group-by-planning-area",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#group-by-planning-area",
+    "title": "Take-home Exercise 5",
+    "section": "Group by planning area",
+    "text": "Group by planning area\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap()"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#adding-boundary-line",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#adding-boundary-line",
+    "title": "Take-home Exercise 5",
+    "section": "Adding boundary line",
+    "text": "Adding boundary line\n\nggplot(data=realis2018_selected, \n       aes(area = `Total Unit Sold`,\n           fill = `Median Unit Price ($ psm)`,\n           subgroup = `Planning Region`,\n           subgroup2 = `Planning Area`)) + \n  geom_treemap() +\n  geom_treemap_subgroup2_border(colour = \"gray40\",\n                                size = 2) +\n  geom_treemap_subgroup_border(colour = \"gray20\")\n\n\n\n\n\n\n\n\n\nlibrary(devtools)\ninstall_github(\"timelyportfolio/d3treeR\")\nlibrary(d3treeR)"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#designing-an-interactive-treemap",
+    "href": "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.html#designing-an-interactive-treemap",
+    "title": "Take-home Exercise 5",
+    "section": "Designing An Interactive Treemap",
+    "text": "Designing An Interactive Treemap\n\ntm &lt;- treemap(realis2018_summarised,\n        index=c(\"Planning Region\", \"Planning Area\"),\n        vSize=\"Total Unit Sold\",\n        vColor=\"Median Unit Price ($ psm)\",\n        type=\"value\",\n        title=\"Private Residential Property Sold, 2017\",\n        title.legend = \"Median Unit Price (S$ per sq. m)\"\n        )\n\n\n\n\n\n\n\n\n\nd3tree(tm,rootname = \"Singapore\" )"
   }
 ]
