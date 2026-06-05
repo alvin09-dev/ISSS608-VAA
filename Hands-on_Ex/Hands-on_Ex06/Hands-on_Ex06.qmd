@@ -77,7 +77,7 @@ ggraph(GAStech_graph) +
   geom_node_point()
 ```
 
-##  Changing the default network graph theme
+## Changing the default network graph theme
 
 ```{r}
 g <- ggraph(GAStech_graph) + 
