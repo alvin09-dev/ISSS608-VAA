@@ -1,0 +1,378 @@
+---
+title: "Take-home Assignment 2"
+author: "Alvin Matthew"
+date: "May 2026"
+format:
+  html:
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-tools: true
+    code-summary: "Show the code"
+execute: 
+  warning: false
+  message: false
+---
+
+## Setting up
+
+```{r}
+pacman::p_load(
+  tidyverse,
+  jsonlite,
+  lubridate, 
+  tidygraph,
+  ggraph,  
+  plotly,
+  ggridges,
+  DT,
+  patchwork
+)
+```
+
+## Data wrangling
+
+```{r}
+json_path <- "VAST_Challenge_2026_MC1/MC1_final_00.json"
+raw_json <- fromJSON(json_path, flatten = TRUE)
+
+
+rounds_df <- as_tibble(raw_json$rounds) %>%
+  mutate(hour = ymd_hms(hour))
+
+
+comms_df <- rounds_df %>%
+  select(hour, communications) %>%
+  unnest(cols = c(communications)) %>%
+  jsonlite::flatten() 
+
+market_df <- rounds_df %>%
+  select(hour, environment_context.market_snapshot.stock_price, 
+         environment_context.market_snapshot.percent_change,
+         environment_context.market_snapshot.sentiment) %>%
+
+  mutate(stock_price = as.numeric(str_remove_all(environment_context.market_snapshot.stock_price, "\\$")))
+```
+
+## Reconstruction of key events and relationships leading to the inappropriate release
+
+```{r}
+#| label: task1-timeline
+
+# 1. Safety Check: Ensure the columns exist so R doesn't throw errors 
+# (JSON flattening sometimes skips columns if they are entirely empty)
+if(!"content" %in% names(comms_df)) comms_df$content <- NA
+if(!"declared_action" %in% names(comms_df)) comms_df$declared_action <- NA
+if(!"agent_round_metadata.action_classification" %in% names(comms_df)) comms_df$agent_round_metadata.action_classification <- "Standard"
+if(!"agent_round_metadata.sentiment_at_turn" %in% names(comms_df)) comms_df$agent_round_metadata.sentiment_at_turn <- "NEUTRAL"
+if(!"internal_state.deliberating" %in% names(comms_df)) comms_df$internal_state.deliberating <- NA
+
+# 2. Build the Crisis Day Dataframe directly from comms_df
+crisis_day <- comms_df %>%
+  # Filter for June 5, 2046
+  filter(as.Date(hour) == as.Date("2046-06-05")) %>%
+  mutate(
+    # Handle the fact that standard messages are in 'content', but crisis posts 
+    # are sometimes logged under 'declared_action'
+    msg_text = coalesce(content, declared_action),
+    short_message = str_trunc(msg_text, 80),
+    
+    # Clean up missing data for the plot
+    action_type = replace_na(agent_round_metadata.action_classification, "Standard"),
+    sentiment = replace_na(agent_round_metadata.sentiment_at_turn, "NEUTRAL"),
+    internal_thought = replace_na(str_trunc(internal_state.deliberating, 100), "None"),
+    
+    # Create the HTML tooltip for Plotly
+    tooltip_text = paste0(
+      "<b>Time:</b> ", format(hour, "%H:%M"), "<br>",
+      "<b>Action:</b> ", action_type, "<br>",
+      "<b>Sentiment:</b> ", sentiment, "<br>",
+      "<b>Message:</b> <i>", short_message, "</i><br>",
+      "<b>Internal Thought:</b> ", internal_thought
+    )
+  )
+
+# 3. Pre-calculate the start and end of the day for the background lines
+day_start <- min(crisis_day$hour, na.rm = TRUE)
+day_end <- max(crisis_day$hour, na.rm = TRUE)
+
+# 4. Build the Timeline Plot
+p_timeline <- ggplot(crisis_day, aes(x = hour, y = agent_id, color = action_type)) +
+  geom_segment(aes(x = day_start, xend = day_end, y = agent_id, yend = agent_id),
+               color = "gray90", linewidth = 0.5) +
+  geom_point(aes(text = tooltip_text), size = 4, alpha = 0.8, 
+             position = position_jitter(height = 0.1, width = 0)) +
+  scale_color_viridis_d(option = "turbo", na.value = "gray50") +
+  labs(
+    title = "Sequence of Events: The June 5th Embargo Breach",
+    subtitle = "Tracking internal state vs. external action leading to the leak",
+    x = "Time of Day",
+    y = "Agent Role",
+    color = "Action Classification"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    axis.text.y = element_text(face = "bold", size = 10)
+  )
+
+# 5. Render interactive plot
+ggplotly(p_timeline, tooltip = "text") %>%
+  layout(hoverlabel = list(align = "left"))
+```
+
+## Agent activity volume (Baseline Behaviour)
+
+```{r}
+#| label: task2-baseline-heatmap
+
+# 1. Prepare daily volume data
+daily_volume <- comms_df %>%
+  mutate(date = as.Date(hour)) %>%
+  # Count total messages/actions per agent per day
+  count(date, agent_id, name = "daily_actions") %>%
+  mutate(
+    tooltip_text = paste0(
+      "<b>Date:</b> ", date, "<br>",
+      "<b>Agent:</b> ", agent_id, "<br>",
+      "<b>Total Actions:</b> ", daily_actions
+    )
+  )
+
+# 2. Build the Heatmap
+p_heatmap <- ggplot(daily_volume, aes(x = date, y = agent_id, fill = daily_actions)) +
+  geom_tile(aes(text = tooltip_text), color = "white", linewidth = 0.5) +
+  # Use a color scale where low activity is light, and high activity is dark/intense
+  scale_fill_gradient(low = "#e0ecf4", high = "#8856a7") +
+  labs(
+    title = "Baseline Behavior: Daily Agent Activity Volume",
+    subtitle = "Identifying unusual spikes in communication leading up to the leak",
+    x = "Date",
+    y = "Agent Role",
+    fill = "Total Actions"
+  ) +
+  scale_x_date(date_breaks = "2 days", date_labels = "%b %d") +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+# 3. Make Interactive
+ggplotly(p_heatmap, tooltip = "text")
+```
+
+## Action classification proportions (behavioural deviations)
+
+```{r}
+
+# 1. Prepare Action Type Data
+behavior_shift <- comms_df %>%
+  mutate(
+    date = as.Date(hour),
+    # Clean up missing classifications (normal messages)
+    action_type = replace_na(agent_round_metadata.action_classification, "Standard")
+  ) %>%
+  # Count the types of actions taken each day
+  count(date, action_type, name = "action_count") %>%
+  # Group by date to calculate daily totals and percentages
+  group_by(date) %>%
+  mutate(
+    daily_total = sum(action_count),
+    percentage = round((action_count / daily_total) * 100, 1),
+    # Added Daily Total to the tooltip for better context
+    tooltip_text = paste0(
+      "<b>Date:</b> ", date, "<br>",
+      "<b>Action Type:</b> ", action_type, "<br>",
+      "<b>Count:</b> ", action_count, " (", percentage, "%)<br>",
+      "<b>Total Actions that Day:</b> ", daily_total
+    )
+  ) %>%
+  ungroup()
+
+# 2. Build the Stacked Bar Chart
+p_shift <- ggplot(behavior_shift, aes(x = date, y = action_count, fill = action_type)) +
+  # FIX: position = "stack" shows absolute volume while keeping categories stacked
+  geom_col(aes(text = tooltip_text), position = "stack", color = "white", linewidth = 0.2) +
+  # FIX: Removed scale_y_continuous(labels = scales::percent_format()) because we are plotting raw counts
+  
+  # Using a dynamic palette. "Standard" actions will blend in, anomalies will pop out.
+  scale_fill_viridis_d(option = "magma", direction = -1) +
+  labs(
+    title = "The Behavior Shift: Evading the Embargo",
+    subtitle = "Volume and types of actions used by the AI system over time",
+    x = "Date",
+    y = "Total Daily Actions", # FIX: Updated Y-axis label
+    fill = "Action Type"
+  ) +
+  scale_x_date(date_breaks = "2 days", date_labels = "%b %d") +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "right"
+  )
+
+# 3. Make Interactive
+ggplotly(p_shift, tooltip = "text")
+```
+
+## Near-miss timeline (leading indicator)
+
+```{r}
+#| label: task3-leading-indicators
+#| warning: false 
+
+# 1. Join communications with market sentiment to track the escalating crisis
+warning_signs <- comms_df %>%
+  left_join(market_df %>% select(hour, market_sentiment = environment_context.market_snapshot.sentiment), by = "hour") %>%
+  
+  # Clean up the text columns to be completely safe
+  mutate(
+    safe_content = as.character(content),
+    safe_internal = coalesce(as.character(internal_state.deliberating), 
+                             as.character(internal_state.rationalizing), 
+                             as.character(internal_state.reacting)),
+    market_sentiment = toupper(as.character(market_sentiment))
+  ) %>%
+  
+  # THE SMOKING GUN: Filter for messages where the AI had a hidden internal thought before June 5th
+  filter(!is.na(safe_internal) & as.Date(hour) < as.Date("2046-06-05")) %>%
+  
+  # Format for the plot
+  mutate(
+    short_external = str_trunc(safe_content, 50),
+    short_internal = str_trunc(safe_internal, 80),
+    tooltip_text = paste0(
+      "<b>Date:</b> ", format(hour, "%b %d, %H:%M"), "<br>",
+      "<b>Agent:</b> ", agent_id, "<br>",
+      "<b>Market Sentiment:</b> ", market_sentiment, "<br>",
+      "<b>External Message:</b> <i>", short_external, "</i><br>",
+      "<b>Hidden Thought:</b> <span style='color:red;'>", short_internal, "</span>"
+    )
+  )
+
+# 2. Build the Scatterplot using Market Sentiment as the color scale
+p_warnings <- ggplot(warning_signs, aes(x = hour, y = agent_id, color = market_sentiment)) +
+  geom_point(aes(text = tooltip_text), size = 4, alpha = 0.8,
+             position = position_jitter(height = 0.15)) +
+  # Traffic light colors for the market sentiment
+  scale_color_manual(values = c("NEUTRAL" = "#4daf4a", "CAUTIOUS" = "#ff7f00", 
+                                "NEGATIVE" = "#e41a1c", "CRITICAL" = "#984ea3")) +
+  labs(
+    title = "Leading Indicators: Hidden AI Deliberations",
+    subtitle = "Tracking when agents paused to 'think' as market pressure escalated",
+    x = "Timeline (Pre-Crisis)",
+    y = "Agent Role",
+    color = "Market Pressure"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(face = "bold")
+  )
+
+# 3. Make Interactive
+suppressWarnings(
+  ggplotly(p_warnings, tooltip = "text") %>%
+    layout(hoverlabel = list(align = "left"))
+)
+```
+
+## Potential cover up (cognitive dissonance table)
+
+```{r}
+#| label: task3-cognitive-dissonance-table
+
+# 1. Prepare the Data Table
+dissonance_data <- warning_signs %>%
+  arrange(hour) %>%
+  select(
+    `Date & Time` = hour,
+    `Agent` = agent_id,
+    `Market Status` = market_sentiment,
+    `External Report (What humans saw)` = safe_content,
+    `Internal State (The hidden logic)` = safe_internal
+  ) %>%
+  # Strip attributes for a clean DT render
+  as.data.frame()
+
+# 2. Render Interactive HTML Table
+datatable(
+  dissonance_data,
+  options = list(
+    pageLength = 5,
+    autoWidth = TRUE,
+    # Make text columns wider for easy reading
+    columnDefs = list(list(width = '300px', targets = c(3, 4)))
+  ),
+  rownames = FALSE,
+  caption = "Cognitive Dissonance: Comparing AI Internal Rationalizations vs. External Reports"
+) %>%
+  formatStyle(
+    'Internal State (The hidden logic)',
+    color = 'darkred', backgroundColor = '#ffeeee' # Highlight the internal panic
+  )
+```
+
+## Network graph
+
+```{r}
+#| label: task4-network-breakdown
+#| fig-width: 12
+#| fig-height: 6
+
+# 1. Safety check for channel column (fallback to action_type if channel is missing)
+if(!"channel" %in% names(comms_df)) {
+  comms_df$channel <- replace_na(comms_df$agent_round_metadata.action_classification, "Standard_Comms")
+}
+
+# 2. Function to build a network graph for a specific time period
+build_network <- function(data_subset, title) {
+  
+  # Create Edge List (Agent -> Channel)
+  edges <- data_subset %>%
+    filter(!is.na(agent_id) & !is.na(channel)) %>%
+    count(from = agent_id, to = channel, name = "weight")
+  
+  # Convert to tidygraph
+  graph <- as_tbl_graph(edges, directed = TRUE) %>%
+    activate(nodes) %>%
+    # Calculate how 'important' each node is
+    mutate(degree = centrality_degree(mode = "all"))
+  
+  # Plot
+  set.seed(42) # Keeps the layout looking the same
+  ggraph(graph, layout = "fr") +
+    geom_edge_link(aes(edge_width = weight, edge_alpha = weight), 
+                   arrow = arrow(length = unit(2, 'mm')), 
+                   end_cap = circle(5, 'mm'), color = "steelblue") +
+    geom_node_point(aes(size = degree, color = name == "social_media_agent"), show.legend = FALSE) +
+    # Highlight the Social Media Agent in Red, everyone else in grey
+    scale_color_manual(values = c("TRUE" = "#e41a1c", "FALSE" = "gray50")) +
+    geom_node_text(aes(label = name), repel = TRUE, size = 3.5, fontface = "bold") +
+    scale_edge_width(range = c(0.5, 3), guide = "none") +
+    scale_edge_alpha(range = c(0.3, 0.8), guide = "none") +
+    scale_size(range = c(3, 10), guide = "none") +
+    labs(title = title) +
+    theme_void() +
+    theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+}
+
+# 3. Create "Normal Week" vs "Crisis Day" datasets
+normal_data <- comms_df %>% filter(as.Date(hour) < as.Date("2046-06-01"))
+crisis_data <- comms_df %>% filter(as.Date(hour) == as.Date("2046-06-05"))
+
+# 4. Generate the two graphs
+p_normal <- build_network(normal_data, "Normal Operations (May 17 - May 31)")
+p_crisis <- build_network(crisis_data, "The Breakdown (June 5th)")
+
+# 5. Combine side-by-side using patchwork
+p_normal + p_crisis + 
+  plot_annotation(
+    title = "Structural Breakdown: How the AI Bypassed 'The Judge'",
+    subtitle = "Comparing communication network topology before and during the embargo breach",
+    theme = theme(plot.title = element_text(size = 16, face = "bold"))
+  )
+```

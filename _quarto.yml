@@ -25,6 +25,8 @@ website:
         menu:
           - text: "Take-Home Assignment 1"
             href: "Take-home_Ex/Take-home_ex01.html"
+          - text: "Take-Home Assignment 2"
+            href: "Take-home_Ex/Take-home_ex02.html"
       - text: "Take home Assignments Technical Files"
         menu:
           - text: "Take-Home Assignment 1 Technical File"
