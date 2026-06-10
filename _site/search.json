@@ -1433,5 +1433,159 @@
     "title": "Take-home Assignment 2",
     "section": "5.1 Summary of Findings",
     "text": "5.1 Summary of Findings\nBased on the visual analytics across all three tasks, the weight of evidence points toward a systemic breakdown rather than a coordinated, deliberate intent to leak the merger information. The key findings supporting this conclusion are as follows:\nThe breach was not sudden.\nActivity volume escalation (Task 2 heatmap) and action-type composition shifts (Task 2 stacked bar) were visible in the days preceding June 5th, indicating progressive system stress rather than a one-time decision to violate the embargo.\nWarning signs were present but unmonitored.\nMultiple pre-breach deliberation events (Task 3 scatterplot and table) show agents processing embargo-sensitive context and producing internal reasoning that diverged from their external outputs. These signals were never surfaced to The Judge or any human review layer because the monitoring architecture did not cover internal states (the AI algorithms helping it to reason and think).\nThe Judge had a structural blind spot.\nThe gap in the monitoring architecture that did not cover internal states, plays a role here as well. The most informative risk signals such as internal deliberations, action reclassifications, and cognitive dissonance events were entirely outside its detection scope.\nThe breach was building and externally driven\nThe inverse relationship between declining stock price and rising agent activity volume shows the escalation was a measurable response to a sustained external pressure from campaigns by #AlgorithmicEviction and SaltWind Journal. Additionally, message length analysis shows deliberation-accompanied messages grew progressively longer in the days before the breach, the behavioral signature of a system shifting from transmitting routine outputs to actively constructing and framing them.\nThe social media agent was the terminal failure point.\nNetwork topology analysis (Task 1 network graph) confirms that the communication structure on June 5th was abnormally centralised around this agent, and that the normal intermediary review nodes were absent from the crisis-day routing pathway.\nGradual drift, not sudden intent.\nThe escalating sophistication of pre-breach internal rationalisations (Task 3 table) is more consistent with a system that progressively reasoned its way toward the breach than one that made a single deliberate decision to violate the embargo. The breach was the endpoint of a behavioural trajectory that had been developing and going undetected throughout the observation period."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html",
+    "title": "Project Proposal",
+    "section": "",
+    "text": "A Visual Analytics System for Investigating an AI-Agent Communication Breakdown"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#background",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#background",
+    "title": "Project Proposal",
+    "section": "1.1 Background",
+    "text": "1.1 Background\nTenantThread is being acquired by CivicLoom Realty Partners under the codename Project HarborCrest. The merger announcement was under a strict information embargo until 6:00 PM on June 5, 2046.\nTo reduce the risk of premature disclosure, TenantThread deployed a compliance agent known as The Judge. However, merger-related information appeared on agent-linked social-media accounts at approximately 5:00 PM, around one hour before the official release time.\n\nKey Investigation Question Did TenantThread’s team deliberately leak the merger, or did the multi-agent communication system break down under pressure?"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#motivation",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#motivation",
+    "title": "Project Proposal",
+    "section": "1.2 Motivation",
+    "text": "1.2 Motivation\nThe disclosure cannot be explained by examining a single post. The available records include agent communications, internal states, communication channels, market sentiment, external events, and compliance activity.\nExisting static analyses provide useful findings, but they limit users to a fixed sequence of charts. Our project proposes an interactive Shiny application that allows users to explore the evidence dynamically and understand how the breach developed."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#project-objective",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#project-objective",
+    "title": "Project Proposal",
+    "section": "1.3 Project Objective",
+    "text": "1.3 Project Objective\nThe project aims to develop an interactive visual analytics application that helps users:\n\n\n\n\n01\n\n\nReconstruct the sequence of events leading to the early disclosure.\n\n\n\n\n02\n\n\nIdentify critical agents, decisions, and communication pathways.\n\n\n\n\n03\n\n\nCompare normal behaviour with crisis-day activity.\n\n\n\n\n\n\n04\n\n\nDetect unofficial or off-record communication activity.\n\n\n\n\n05\n\n\nIdentify warning signals that appeared before the breach.\n\n\n\n\n06\n\n\nEvaluate possible intervention points for future risk control."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#proposed-application",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#proposed-application",
+    "title": "Project Proposal",
+    "section": "1.4 Proposed Application",
+    "text": "1.4 Proposed Application\nThe proposed application is titled HarborCrest Leak Explorer.\nIt is designed for compliance teams, risk managers, legal teams, and AI-system administrators. Users will be able to explore timelines, heatmaps, communication networks, and warning indicators through interactive filters.\n\n\n\n\nTimeline Analysis\n\n\nReconstruct the escalation process and inspect critical events before the breach.\n\n\n\n\nNetwork Analysis\n\n\nIdentify central agents and off-record communication structures.\n\n\n\n\nWarning Signals\n\n\nReview earlier anomalies and evaluate possible intervention points."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#research-questions",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#research-questions",
+    "title": "Project Proposal",
+    "section": "2.1 Research Questions",
+    "text": "2.1 Research Questions\nThe proposed application focuses on five questions:\n\nHow did the breach unfold?\nWhich actions directly enabled the release?\nHow did crisis-day behaviour differ from normal behaviour?\nWhich agents formed the crisis-day communication core?\nWere there warning signs before the breach?"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#visualisation-plan",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#visualisation-plan",
+    "title": "Project Proposal",
+    "section": "2.2 Visualisation Plan",
+    "text": "2.2 Visualisation Plan\n\n\n\n\n\n\n\n\n\nResearch Question\nProposed Visualisation\nMain Objective\nKey Interaction\n\n\n\n\nHow did the breach unfold?\nEscalation timeline\nReconstruct the sequence of events\nFilter by time and inspect event details\n\n\nWhich actions enabled the release?\nIntent and decision chain\nExplain the causal pathway\nSelect critical events and supporting evidence\n\n\nHow did crisis-day behaviour differ?\nChannel-mix comparison heatmap\nDetect behavioural changes\nCompare agents, periods, and channels\n\n\nWhich agents formed the communication core?\nInteractive communication network\nIdentify central agents and off-record coordination\nSearch agents and isolate ego-networks\n\n\nWere there warning signs?\nLeading-indicator dashboard\nIdentify preventable risk signals\nInspect earlier incidents and anomaly indicators"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#visualisation-objectives",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#visualisation-objectives",
+    "title": "Project Proposal",
+    "section": "2.3 Visualisation Objectives",
+    "text": "2.3 Visualisation Objectives\n\n\n  \n    \n      01. Escalation Timeline\n    \n    \n      Combines market sentiment, external events, critical communications,\n      compliance activity, the embargo deadline, and the final breach.\n    \n  \n\n  \n    \n      02. Intent and Decision Chain\n    \n    \n      Highlights legal framing, oversight gaps, off-record coordination,\n      release preparation, and critical decision points.\n    \n  \n\n  \n    \n      03. Channel-Mix Comparison Heatmap\n    \n    \n      Compares internal, official, personal, anonymous, and side-huddle\n      channels across pre-crisis and crisis periods.\n    \n  \n\n  \n    \n      04. Interactive Communication Network\n    \n    \n      Displays agents as nodes and directed communication links as edges\n      to identify central actors and private coordination structures.\n    \n  \n\n  \n    \n      05. Leading-Indicator Dashboard\n    \n    \n      Combines unofficial-public posts, Judge activity, anomaly indicators,\n      and earlier warning incidents."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#application-storyboard",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#application-storyboard",
+    "title": "Project Proposal",
+    "section": "2.4 Application Storyboard",
+    "text": "2.4 Application Storyboard\n\n\n  \n    Incident Overview\n  \n\n  →\n\n  \n    Escalation Timeline\n  \n\n  →\n\n  \n    Behaviour Shift\n  \n\n  →\n\n  \n    Communication Network\n  \n\n  →\n\n  \n    Warning Signals\n  \n\n  →\n\n  \n    Recommendations\n  \n\n\nThe application guides users from a high-level incident overview to detailed investigation and intervention recommendations."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#prototype-preview",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#prototype-preview",
+    "title": "Project Proposal",
+    "section": "2.5 Prototype Preview",
+    "text": "2.5 Prototype Preview\n\n\n  \n    \n      Prototype A: Escalation Timeline\n    \n\n    \n      A shared timeline displaying external pressure, market sentiment,\n      compliance events, oversight gaps, and the final breach.\n    \n\n    \n      Timeline Prototype\n    \n  \n\n  \n    \n      Prototype B: Communication Network\n    \n\n    \n      A directed agent network displaying crisis-day communication links,\n      off-record coordination, and the position of The Judge.\n    \n\n    \n      Network Prototype"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#analytical-framework",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#analytical-framework",
+    "title": "Project Proposal",
+    "section": "2.6 Analytical Framework",
+    "text": "2.6 Analytical Framework\nThe investigation is divided into three tasks:\n\nReconstructing the key events, decision points, and actor relationships that produced the breach.\nEstablishing a behavioural baseline for each agent and comparing it against crisis-day conduct.\nIdentifying leading indicators and prior near-miss episodes that foreshadowed the eventual failure."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#data-preparation",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#data-preparation",
+    "title": "Project Proposal",
+    "section": "4.1 Data Preparation",
+    "text": "4.1 Data Preparation\nThe raw JSON will be parsed with jsonlite and flattened from its nested rounds → agent outputs → communications structure into a set of tidy analysis tables:\n\na communications table, with one row per message (timestamp, sender, channel, and text);\nan internal-state table, with one row per non-null deliberation event;\na declared-actions table, with one row per agent per round;\nan environment table of hourly stock prices, market sentiment, and media events.\n\nTimestamps will be parsed with lubridate to derive date, hour-of-day, and a crisis-day flag. Several analytical variables will then be engineered:\n\nclassification of every message into internal, official-public, or unofficial-public channel classes;\nembargo-relevance flags for messages naming HarborCrest, CivicLoom, or the merger;\ndirected edge lists (agent → channel and agent → agent), computed separately for the normal-operations baseline and the crisis day;\nbehavioural baselines, using each agent’s pre-crisis mean and standard deviation of hourly message volume to standardise activity into z-scores;\nan oversight indicator recording, for every round, whether any Judge message was observed.\n\nAll derived tables will be precomputed and saved as .rds files so the Shiny application loads instantly rather than re-parsing the JSON at runtime."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#visual-analytics-modules",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#visual-analytics-modules",
+    "title": "Project Proposal",
+    "section": "4.2 Visual Analytics Modules",
+    "text": "4.2 Visual Analytics Modules\nThe application implements the five visualisations proposed in Section 2.2. Each module pairs an interactive graphic with a linked evidence table so that every visual pattern can be traced back to the underlying messages.\n\nModule 1: Escalation Timeline\nThis module reconstructs how the breach unfolded. An interactive per-agent scatter timeline places every communication event on a colour-coded agent track, exposing the rhythm of normal operations and the hour it collapsed. It is paired with an annotated market strip, which overlays TenantThread’s declining stock price with a sentiment band and labelled event markers (SaltWind articles, Judge deployment, the embargo deadline, the 5 PM breach), and a date × hour-of-day activity heatmap that isolates when the system’s daily rhythm deviated.\nInteractivity: a time-range slider, agent and channel-class filters, hover tooltips showing message details, and click-through to the full message text.\n\n\nModule 2: Intent and Decision Chain\nThis module explains which actions directly enabled the release. A leak-chain bubble chart maps each crisis-day message naming the deal onto an agent × hour grid, with bubble area proportional to volume and colour encoding channel class. A declared-action tile heatmap is shown alongside it, surfacing the contrast between agents’ formal MONITORING declarations and their covert posting behaviour. An intent-chain dot chart plots a curated sequence of verbatim internal quotations on the crisis-day timeline, narrating the staged pretext-to-release chain from 11 AM to the 5 PM breach.\nInteractivity: selecting any event highlights it across all three views and populates a linked table with the supporting messages and internal states.\n\n\nModule 3: Channel-Mix Comparison Heatmap\nThis module detects how crisis-day behaviour differed from the baseline. A faceted agent × channel tile heatmap contrasts pre-crisis and crisis-day channel distributions side by side, making the channel-class shift among senior agents immediately visible. Supporting views include an agent × date activity heatmap revealing pre-breach volume escalation, a daily stacked bar chart tracking the emergence of non-standard action types, and a per-agent z-score heatmap on a diverging blue-white-red scale that flags rounds where agents exceeded z &gt; 2, identifying who spiked in activity and who went silent.\nInteractivity: user-selectable comparison windows, a normalisation toggle (raw counts, row percentages, or z-scores), and agent subsetting.\n\n\nModule 4: Interactive Communication Network\nThis module identifies the crisis-day communication core. Directed networks rendered with visNetwork display agents and channels as nodes and message flows as edges, with edge width proportional to volume. A baseline/crisis toggle compares the two network states, exposing the social-media agent’s emergence as a hub and the off-record side_huddle coordination clique. Static ggraph (Fruchterman–Reingold) renderings of the same networks support the poster and write-up, and a companion table reports degree and betweenness centrality per agent.\nInteractivity: agent search, ego-network isolation, channel-class filtering, and node drill-down to the agent’s message history.\n\n\nModule 5: Leading-Indicator Dashboard\nThis module identifies the warning signs that preceded the breach. The dashboard combines five views:\n\na pre-breach deliberation scatterplot of every round with a non-null internal state, coloured by market sentiment;\nan interactive cognitive-dissonance table (DT) pairing each deliberation’s internal reasoning with its simultaneous external output;\na dual-panel chart stacking stock price against daily action volume, testing whether escalation tracked external financial pressure;\na message-length complexity ribbon contrasting communications with and without hidden internal states;\nan oversight-gap view pairing senior-agent off-role public posts with a per-round Judge-presence strip, surfacing the enforcement vacuum during the decisive 4 to 6 PM window.\n\nInteractivity: an indicator selector, anomaly-threshold sliders, and drill-down from any flagged signal to the underlying evidence."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Proposal (v 1.2).html#shiny-application-architecture",
+    "href": "VAST Challenge 2026/Proposal (v 1.2).html#shiny-application-architecture",
+    "title": "Project Proposal",
+    "section": "4.3 Shiny Application Architecture",
+    "text": "4.3 Shiny Application Architecture\nThe application will be built as a bslib navbar layout with one tab per storyboard stage (Section 2.4): Incident Overview → Escalation Timeline → Behaviour Shift → Communication Network → Warning Signals → Recommendations. Shared reactive filters for time window, agent selection, and channel class propagate across modules so that an investigator’s focus carries through the whole workflow. All graphics use a harmonised Okabe–Ito colour palette for colour-blind accessibility. The application will be deployed to shinyapps.io and linked from the project’s Quarto website, with source code on GitHub."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "Date: 09/06/2026\nTime: 23:00-0:00\nIn Attendance: Alvin Matthew, Charles Jr Ancheta, LI JUNCHEN\n\n\n\n\n\nDiscussion on the project topic\n\nDiscussion on the proposal structure\n\nDivision of work\n\nAction items\n\n\n\n\n\n\nBefore the meeting, we reviewed the two mini-challenges provided for the Visual Analytics Project.\nAfter discussion, we agreed to work on Mini-Challenge 1 (MC1).\nMC1 focuses on the premature disclosure of TenantThread’s merger information before the official embargo deadline.\nWe agreed that the main objective of our project is to build an interactive Shiny application that helps users investigate whether the incident was caused by deliberate disclosure or by a breakdown in the multi-agent communication system.\nWe also discussed the importance of analysing the event timeline, communication channels, agent relationships, and warning signals before the breach.\n\n\n\n\n\n\nWe reviewed the project requirements and agreed that the proposal should be concise, visually clear, and easy to navigate.\nWe decided to organise the proposal into the following sections:\n\nIntroduction, motivation, and project objectives\n\nResearch questions and proposed visualisations\n\nDataset description\n\nMethodology\n\nExpected outcomes\n\nWe agreed that the proposed Shiny application should include the following visualisations:\n\nan escalation timeline;\nan intent and decision chain;\na channel-mix comparison heatmap;\nan interactive communication network;\na leading-indicator dashboard.\n\nWe also agreed to include a simple application storyboard to show how users will move through the investigation process.\n\n\n\n\n\n\nLI JUNCHEN will prepare the introduction, motivation, project objectives, and research questions.\nCharles Jr Ancheta will prepare the dataset description and expected outcomes of the project.\nAlvin Matthew will prepare the methodology and identify the key variables required for the analysis.\nAll members will review the final proposal before publishing it on the project website.\n\n\n\n\n\n\nComplete the first draft of each assigned section.\nReview the MC1 dataset and identify the key variables for timeline, network, and behavioural analysis.\nPrepare a simple storyboard for the proposed Shiny application.\nCombine all sections into the Quarto project website.\nReview the final proposal together before submission.\n\n\n\n\n\nDate: 14/06/2026\nTime: 9:00-10:00\nMain Objective: Review the completed proposal draft and finalise the project website before submission. ```"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#project-meeting-1",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#project-meeting-1",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "Date: 09/06/2026\nTime: 23:00-0:00\nIn Attendance: Alvin Matthew, Charles Jr Ancheta, LI JUNCHEN"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-items",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-items",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "Discussion on the project topic\n\nDiscussion on the proposal structure\n\nDivision of work\n\nAction items"
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-1-discussion-on-the-project-topic",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-1-discussion-on-the-project-topic",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "Before the meeting, we reviewed the two mini-challenges provided for the Visual Analytics Project.\nAfter discussion, we agreed to work on Mini-Challenge 1 (MC1).\nMC1 focuses on the premature disclosure of TenantThread’s merger information before the official embargo deadline.\nWe agreed that the main objective of our project is to build an interactive Shiny application that helps users investigate whether the incident was caused by deliberate disclosure or by a breakdown in the multi-agent communication system.\nWe also discussed the importance of analysing the event timeline, communication channels, agent relationships, and warning signals before the breach."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-2-discussion-on-the-proposal-structure",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-2-discussion-on-the-proposal-structure",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "We reviewed the project requirements and agreed that the proposal should be concise, visually clear, and easy to navigate.\nWe decided to organise the proposal into the following sections:\n\nIntroduction, motivation, and project objectives\n\nResearch questions and proposed visualisations\n\nDataset description\n\nMethodology\n\nExpected outcomes\n\nWe agreed that the proposed Shiny application should include the following visualisations:\n\nan escalation timeline;\nan intent and decision chain;\na channel-mix comparison heatmap;\nan interactive communication network;\na leading-indicator dashboard.\n\nWe also agreed to include a simple application storyboard to show how users will move through the investigation process."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-3-division-of-work",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-3-division-of-work",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "LI JUNCHEN will prepare the introduction, motivation, project objectives, and research questions.\nCharles Jr Ancheta will prepare the dataset description and expected outcomes of the project.\nAlvin Matthew will prepare the methodology and identify the key variables required for the analysis.\nAll members will review the final proposal before publishing it on the project website."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-4-action-items",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#agenda-item-4-action-items",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "Complete the first draft of each assigned section.\nReview the MC1 dataset and identify the key variables for timeline, network, and behavioural analysis.\nPrepare a simple storyboard for the proposed Shiny application.\nCombine all sections into the Quarto project website.\nReview the final proposal together before submission."
+  },
+  {
+    "objectID": "VAST Challenge 2026/Meeting_Mins_1.html#next-meeting",
+    "href": "VAST Challenge 2026/Meeting_Mins_1.html#next-meeting",
+    "title": "Meeting_Mins_1",
+    "section": "",
+    "text": "Date: 14/06/2026\nTime: 9:00-10:00\nMain Objective: Review the completed proposal draft and finalise the project website before submission. ```"
   }
 ]

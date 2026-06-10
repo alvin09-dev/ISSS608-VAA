@@ -31,6 +31,9 @@ website:
         menu:
           - text: "Take-Home Assignment 1 Technical File"
             href: "Take-home_Ex/Take-home_ex01_technical.html"
+        menu:
+          - text: "VAST Challenge 2026 Group Project"
+            href: "VAST Challenge 2026/Proposal (v 1.2).html"
     right:
       - href: index.qmd
         text: Home

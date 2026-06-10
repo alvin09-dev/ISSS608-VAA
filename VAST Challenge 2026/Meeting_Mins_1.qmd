@@ -1,0 +1,110 @@
+---
+title: "Meeting_Mins_1"
+subtitle: "ISSS608 Visual Analytics Project"
+author:
+  - "Alvin Matthew"
+  - "Charles Jr Ancheta"
+  - "LI JUNCHEN"
+date: "June 9, 2026"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    smooth-scroll: true
+    css: proposal.css
+editor: visual
+---
+
+# ISSS608 Group Project Meeting Minutes
+
+## Project Meeting 1
+
+**Date:** 09/06/2026
+
+**Time:** 23:00-0:00
+
+**In Attendance:** Alvin Matthew, Charles Jr Ancheta, LI JUNCHEN
+
+------------------------------------------------------------------------
+
+## Agenda Items
+
+1.  Discussion on the project topic\
+2.  Discussion on the proposal structure\
+3.  Division of work\
+4.  Action items
+
+------------------------------------------------------------------------
+
+## Agenda Item 1: Discussion on the Project Topic
+
+- Before the meeting, we reviewed the two mini-challenges provided for the Visual Analytics Project.
+
+- After discussion, we agreed to work on **Mini-Challenge 1 (MC1)**.
+
+- MC1 focuses on the premature disclosure of TenantThread’s merger information before the official embargo deadline.
+
+- We agreed that the main objective of our project is to build an interactive Shiny application that helps users investigate whether the incident was caused by deliberate disclosure or by a breakdown in the multi-agent communication system.
+
+- We also discussed the importance of analysing the event timeline, communication channels, agent relationships, and warning signals before the breach.
+
+------------------------------------------------------------------------
+
+## Agenda Item 2: Discussion on the Proposal Structure
+
+- We reviewed the project requirements and agreed that the proposal should be concise, visually clear, and easy to navigate.
+
+- We decided to organise the proposal into the following sections:
+
+  1.  Introduction, motivation, and project objectives\
+  2.  Research questions and proposed visualisations\
+  3.  Dataset description\
+  4.  Methodology\
+  5.  Expected outcomes
+
+- We agreed that the proposed Shiny application should include the following visualisations:
+
+  - an escalation timeline;
+  - an intent and decision chain;
+  - a channel-mix comparison heatmap;
+  - an interactive communication network;
+  - a leading-indicator dashboard.
+
+- We also agreed to include a simple application storyboard to show how users will move through the investigation process.
+
+------------------------------------------------------------------------
+
+## Agenda Item 3: Division of Work
+
+- **LI JUNCHEN** will prepare the introduction, motivation, project objectives, and research questions.
+
+- **Charles Jr Ancheta** will prepare the dataset description and expected outcomes of the project.
+
+- **Alvin Matthew** will prepare the methodology and identify the key variables required for the analysis.
+
+- All members will review the final proposal before publishing it on the project website.
+
+------------------------------------------------------------------------
+
+## Agenda Item 4: Action Items
+
+- Complete the first draft of each assigned section.
+
+- Review the MC1 dataset and identify the key variables for timeline, network, and behavioural analysis.
+
+- Prepare a simple storyboard for the proposed Shiny application.
+
+- Combine all sections into the Quarto project website.
+
+- Review the final proposal together before submission.
+
+------------------------------------------------------------------------
+
+## Next Meeting
+
+**Date:** 14/06/2026
+
+**Time:** 9:00-10:00
+
+**Main Objective:** Review the completed proposal draft and finalise the project website before submission. \`\`\`
