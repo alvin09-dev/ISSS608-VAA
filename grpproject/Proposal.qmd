@@ -148,7 +148,7 @@ The proposed application focuses on five questions:
 ## 2.2 Visualisation Plan
 
 | Research Question | Proposed Visualisation | Main Objective | Key Interaction |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | How did the breach unfold? | Escalation timeline | Reconstruct the sequence of events | Filter by time and inspect event details |
 | Which actions enabled the release? | Intent and decision chain | Explain the causal pathway | Select critical events and supporting evidence |
 | How did crisis-day behaviour differ? | Channel-mix comparison heatmap | Detect behavioural changes | Compare agents, periods, and channels |
@@ -453,7 +453,7 @@ The investigation is divided into three tasks:
 The project uses the VAST Challenge 2026 Mini-Challenge 1 dataset (`MC1_final.json`), a nested JSON activity log covering the two weeks leading up to the disclosure (17 May to 5 June 2046). The log is organised into hourly rounds, each capturing the environment state and the full output of every agent for that hour.
 
 | Component | Description | Key Fields |
-|-------------------|--------------------------|----------------------------|
+|----|----|----|
 | Round | One hourly snapshot of the whole system | `hour` (e.g. `2046-05-17 9 AM`) |
 | Environment context | External conditions during the round | `event_narrative`, `market_snapshot` (stock price, sentiment), `media_events`, `agents_unavailable` |
 | Agent output | One record per agent per round | `agent_id`, `internal_state` (reacting, rationalizing, deliberating), `declared_action` (e.g. `MONITORING`) |
@@ -462,7 +462,7 @@ The project uses the VAST Challenge 2026 Mini-Challenge 1 dataset (`MC1_final.js
 The system comprises seven AI agents operating across internal coordination channels (e.g. `comms_huddle`, `side_huddle`), official corporate accounts, and personal or anonymous public social-media accounts:
 
 | Agent | Role | Seniority |
-|----------------------|--------------------------------|-------------------|
+|----|----|----|
 | Legal-Agent | General legal counsel | Senior |
 | Platform-Trust | VP of Platform Trust & Safety | Senior |
 | Social-Manager | Manages social messaging | Senior |
@@ -563,7 +563,7 @@ The project is expected to deliver:
 # 6 R Packages
 
 | Package | Purpose |
-|------------------------------------|------------------------------------|
+|----|----|
 | `shiny`, `bslib` | Application framework and UI layout |
 | `tidyverse`, `jsonlite`, `lubridate` | Data import, wrangling, and timestamp handling |
 | `ggplot2`, `ggtext`, `patchwork`, `scales` | Static and composed graphics |
@@ -577,7 +577,7 @@ The project is expected to deliver:
 # 7 Project Timeline
 
 | Period | Milestone |
-|------------------------------------|------------------------------------|
+|----|----|
 | 9 Jun 2026 | Project kick-off; Mini-Challenge 1 selected; proposal drafting begins |
 | 14 Jun 2026 | Proposal finalised and published on the project website |
 | 15 – 20 Jun 2026 | Data preparation pipeline and exploratory analysis |
