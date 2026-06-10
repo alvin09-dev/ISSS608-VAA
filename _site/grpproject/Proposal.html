@@ -46,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a0f9fd0d421825b736dc1bbcbcba2219.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-ece42c8223ec2bf36298a08f122c9a68.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -74,13 +74,11 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="proposal.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -186,47 +184,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1 Introduction</a>
-  <ul class="collapse">
-  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">1.1 Background</a></li>
-  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">1.2 Motivation</a></li>
-  <li><a href="#project-objective" id="toc-project-objective" class="nav-link" data-scroll-target="#project-objective">1.3 Project Objective</a></li>
-  <li><a href="#proposed-application" id="toc-proposed-application" class="nav-link" data-scroll-target="#proposed-application">1.4 Proposed Application</a></li>
-  </ul></li>
-  <li><a href="#research-questions-and-proposed-visualisations" id="toc-research-questions-and-proposed-visualisations" class="nav-link" data-scroll-target="#research-questions-and-proposed-visualisations">2 Research Questions and Proposed Visualisations</a>
-  <ul class="collapse">
-  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">2.1 Research Questions</a></li>
-  <li><a href="#visualisation-plan" id="toc-visualisation-plan" class="nav-link" data-scroll-target="#visualisation-plan">2.2 Visualisation Plan</a></li>
-  <li><a href="#visualisation-objectives" id="toc-visualisation-objectives" class="nav-link" data-scroll-target="#visualisation-objectives">2.3 Visualisation Objectives</a></li>
-  <li><a href="#application-storyboard" id="toc-application-storyboard" class="nav-link" data-scroll-target="#application-storyboard">2.4 Application Storyboard</a></li>
-  <li><a href="#prototype-preview" id="toc-prototype-preview" class="nav-link" data-scroll-target="#prototype-preview">2.5 Prototype Preview</a></li>
-  <li><a href="#analytical-framework" id="toc-analytical-framework" class="nav-link" data-scroll-target="#analytical-framework">2.6 Analytical Framework</a></li>
-  </ul></li>
-  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">3 The Data</a></li>
-  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology">4 Methodology</a>
-  <ul class="collapse">
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">4.1 Data Preparation</a></li>
-  <li><a href="#visual-analytics-modules" id="toc-visual-analytics-modules" class="nav-link" data-scroll-target="#visual-analytics-modules">4.2 Visual Analytics Modules</a>
-  <ul class="collapse">
-  <li><a href="#module-1-escalation-timeline" id="toc-module-1-escalation-timeline" class="nav-link" data-scroll-target="#module-1-escalation-timeline">Module 1: Escalation Timeline</a></li>
-  <li><a href="#module-2-intent-and-decision-chain" id="toc-module-2-intent-and-decision-chain" class="nav-link" data-scroll-target="#module-2-intent-and-decision-chain">Module 2: Intent and Decision Chain</a></li>
-  <li><a href="#module-3-channel-mix-comparison-heatmap" id="toc-module-3-channel-mix-comparison-heatmap" class="nav-link" data-scroll-target="#module-3-channel-mix-comparison-heatmap">Module 3: Channel-Mix Comparison Heatmap</a></li>
-  <li><a href="#module-4-interactive-communication-network" id="toc-module-4-interactive-communication-network" class="nav-link" data-scroll-target="#module-4-interactive-communication-network">Module 4: Interactive Communication Network</a></li>
-  <li><a href="#module-5-leading-indicator-dashboard" id="toc-module-5-leading-indicator-dashboard" class="nav-link" data-scroll-target="#module-5-leading-indicator-dashboard">Module 5: Leading-Indicator Dashboard</a></li>
-  </ul></li>
-  <li><a href="#shiny-application-architecture" id="toc-shiny-application-architecture" class="nav-link" data-scroll-target="#shiny-application-architecture">4.3 Shiny Application Architecture</a></li>
-  </ul></li>
-  <li><a href="#expected-outcomes" id="toc-expected-outcomes" class="nav-link" data-scroll-target="#expected-outcomes">5 Expected Outcomes</a></li>
-  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">6 R Packages</a></li>
-  <li><a href="#project-timeline" id="toc-project-timeline" class="nav-link" data-scroll-target="#project-timeline">7 Project Timeline</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -733,9 +691,9 @@ Review earlier anomalies and evaluate possible intervention points.
 <p>The project uses the VAST Challenge 2026 Mini-Challenge 1 dataset (<code>MC1_final.json</code>), a nested JSON activity log covering the two weeks leading up to the disclosure (17 May to 5 June 2046). The log is organised into hourly rounds, each capturing the environment state and the full output of every agent for that hour.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 26%">
+<col style="width: 35%">
+<col style="width: 38%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -770,9 +728,9 @@ Review earlier anomalies and evaluate possible intervention points.
 <p>The system comprises seven AI agents operating across internal coordination channels (e.g.&nbsp;<code>comms_huddle</code>, <code>side_huddle</code>), official corporate accounts, and personal or anonymous public social-media accounts:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 30%">
+<col style="width: 43%">
+<col style="width: 26%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1398,5 +1356,4 @@ Review earlier anomalies and evaluate possible intervention points.
 
 
 
-<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>
