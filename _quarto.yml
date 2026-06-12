@@ -21,6 +21,8 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex06.html"
           - text: "Hands-on Exercise 7b"
             href: "Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07.html"
+          - text: "Hands-on Exercise 8"
+            href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html"
       - text: "Take home Assignments"
         menu:
           - text: "Take-Home Assignment 1"
@@ -31,10 +33,6 @@ website:
         menu:
           - text: "Take-Home Assignment 1 Technical File"
             href: "Take-home_Ex/Take-home_ex01_technical.html"
-      - text: "VAST Challenge 2026 Group Project"
-        menu:
-          - text: "VAST Challenge 2026 Group Project"
-            href: "grpproject/Proposal.html"
     right:
       - href: index.qmd
         text: Home
