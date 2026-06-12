@@ -5,6 +5,12 @@
 .DS_Store
 .quarto
 .positai
-
 /.quarto/
 **/*.quarto_ipynb
+.RDataTmp
+.RDataTmp1
+.RDataTmp2
+.RDataTmp3
+.RDataTmp4
+.RDataTmp5
+.RDataTmp6
