@@ -262,7 +262,7 @@ tm_shape(mpsz_pop2020)+
   tm_layout(legend.position = c("right", "bottom"))
 ```
 
-###  By defining a group-by variable in *tm_facets()*
+### By defining a group-by variable in *tm_facets()*
 
 ```{r}
 tm_shape(mpsz_pop2020) +
