@@ -119,7 +119,7 @@ ggplot(sales_report, aes(x=Month, y=Sales)) +
 
 ## Static Information Dashboard Design: gt and gtExtras methods
 
-###  Plotting a simple bullet chart
+### Plotting a simple bullet chart
 
 ```{r}
 product %>%
